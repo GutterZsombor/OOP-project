@@ -1,52 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical"
-    android:background="#800080"
     android:padding="16dp">
 
     <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="LUTEMON BATTLE"
-        android:textSize="24sp"
-        android:textColor="#FFFFFF"
-        android:layout_gravity="center" />
+        android:background="#FF6969"
+        android:text="Bounty Hunters"
+        android:textColor="#F6F6F4"
+        android:textSize="24sp" />
 
-    <Button
-        android:id="@+id/btnViewHome"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="View Home"
-        android:background="#FFFFFF"
-        android:textColor="#800080"
-        android:layout_marginTop="10dp"/>
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/btnViewTraining"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="View Training Area"
-        android:background="#FFFFFF"
-        android:textColor="#800080"
-        android:layout_marginTop="10dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btnViewBattle"
+            <TextView
+
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:text="Hunters at Home"
+                android:textColor="#000000"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/btnViewHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:text="View Home"
+                android:textColor="#800080" />
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="View Battle Arena"
-        android:background="#FFFFFF"
-        android:textColor="#800080"
-        android:layout_marginTop="10dp"/>
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <TextView
+
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:text="Training Area"
+            android:textColor="#000000"
+            android:textSize="24sp" />
+        <Button
+            android:id="@+id/btnViewTraining"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#FFFFFF"
+            android:text="View Training Area"
+            android:textColor="#800080" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:text="Battle Arena"
+                android:textColor="#000000"
+                android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/btnViewBattle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#FFFFFF"
+            android:text="View Battle Arena"
+            android:textColor="#800080" />
+</LinearLayout>
+    </androidx.cardview.widget.CardView>
+
 
     <Button
         android:id="@+id/btnCreateLutemon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#7AFF7A"
         android:text="Create New Lutemon"
-        android:background="#32CD32"
-        android:textColor="#FFFFFF"
-        android:layout_marginTop="20dp"/>
+        android:textColor="#FFFFFF" />
+
+
 </LinearLayout>
