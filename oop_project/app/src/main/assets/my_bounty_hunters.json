@@ -1,7 +1,7 @@
 [
   {
     "name": "Boba Fett",
-    "imagePath": "boba_fett.png",
+    "imagePath": "boba",
     "preferedAttack": false,
     "meleAttack": 60,
     "meleDefense": 70,
@@ -11,12 +11,23 @@
   },
   {
     "name": "Bossk",
-    "imagePath": "bossk.png",
+    "imagePath": "bossk",
     "preferedAttack": true,
     "meleAttack": 80,
     "meleDefense": 85,
     "rangedAttack": 60,
     "rangedDefense": 65,
     "maxHealth": 180
+  },
+  {
+    "name": "IG-88",
+    "imagePath": "ig88",
+    "preferedAttack": false,
+    "meleAttack": 70,
+    "meleDefense": 75,
+    "rangedAttack": 85,
+    "rangedDefense": 90,
+    "maxHealth": 200
   }
+
 ]
