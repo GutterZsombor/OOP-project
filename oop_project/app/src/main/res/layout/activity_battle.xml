@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:padding="16dp">
+
+    <ProgressBar
+        android:id="@+id/progressBar3"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgLutemon1"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="323dp"
+        android:layout_marginTop="19dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Battle Local"
+        android:textColor="#800080"
+        android:textSize="22sp" />
+
+    <ImageView
+        android:id="@+id/imgLutemon1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="40dp"
+
+        app:srcCompat="@mipmap/boba" />
+
+    <ImageView
+        android:id="@+id/imgLutemon2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="40dp"
+
+        app:srcCompat="@mipmap/bosk" />
+
+    <TextView
+        android:id="@+id/txtBattleLog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgLutemon1"
+        android:layout_marginTop="123dp"
+        android:text="Pinky attacks Black! Black tries to escape..."
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/btnNextAttack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#800080"
+        android:text="Next Attack"
+        android:textColor="#FFFFFF" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgLutemon1"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="18dp" />
+
+</RelativeLayout>

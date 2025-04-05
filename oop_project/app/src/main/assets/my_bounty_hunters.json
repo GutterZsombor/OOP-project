@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Boba Fett",
+    "imagePath": "boba_fett.png",
+    "preferedAttack": false,
+    "meleAttack": 60,
+    "meleDefense": 70,
+    "rangedAttack": 90,
+    "rangedDefense": 80,
+    "maxHealth": 150
+  },
+  {
+    "name": "Bossk",
+    "imagePath": "bossk.png",
+    "preferedAttack": true,
+    "meleAttack": 80,
+    "meleDefense": 85,
+    "rangedAttack": 60,
+    "rangedDefense": 65,
+    "maxHealth": 180
+  }
+]
