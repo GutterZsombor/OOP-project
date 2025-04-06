@@ -31,7 +31,7 @@
   },
   {
     "name": "Cad Bane",
-    "imagePath": "cad_bane.png",
+    "imagePath": "cadbane",
     "preferedAttack": false,
     "meleAttack": 50,
     "meleDefense": 60,
@@ -41,7 +41,7 @@
   },
   {
     "name": "Aurra Sing",
-    "imagePath": "aurra_sing.png",
+    "imagePath": "aurrasing",
     "preferedAttack": false,
     "meleAttack": 45,
     "meleDefense": 55,

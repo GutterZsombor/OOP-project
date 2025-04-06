@@ -28,6 +28,12 @@
             <!-- You can add an intent filter here if HomeActivity needs to respond to specific intents from other apps,
                  but for now, since it's only launched from MainActivity, this is not needed. -->
         </activity>
+        <activity
+            android:name=".HireHunterActivity"
+            android:exported="false">  <!--  `exported="false"` because it's launched internally -->
+            <!-- You can add an intent filter here if HomeActivity needs to respond to specific intents from other apps,
+                 but for now, since it's only launched from MainActivity, this is not needed. -->
+        </activity>
 
     </application>
 </manifest>

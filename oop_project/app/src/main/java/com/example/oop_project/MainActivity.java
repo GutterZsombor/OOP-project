@@ -22,7 +22,9 @@ public class MainActivity extends AppCompatActivity {
     private Button btnViewHome;
     private Button btnViewTraining;
     private Button btnViewBattle;
-    private Button btnCreateLutemon;
+    private Button btnHireHunter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
         btnViewHome = findViewById(R.id.btnViewHome);
         btnViewTraining = findViewById(R.id.btnViewTraining);
         btnViewBattle = findViewById(R.id.btnViewBattle);
-        btnCreateLutemon = findViewById(R.id.btnCreateLutemon);
+        btnHireHunter = findViewById(R.id.btnHireHunter);
+
 
         // Set click listener for View Home button
         btnViewHome.setOnClickListener(new View.OnClickListener() {
@@ -44,10 +47,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnHireHunter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Hire Hunter button clicked");
+                Intent intent = new Intent(MainActivity.this, HireHunterActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        //JsonHelper.DONOTUSEcopyJson( this,"not_hired_bounty_hunters.json");
+        //JsonHelper.DONOTUSEcopyJson(this ,"my_bounty_hunters.json");
+
         // Disable other buttons for now
         btnViewTraining.setEnabled(false);
         btnViewBattle.setEnabled(false);
-        btnCreateLutemon.setEnabled(false);
+
         Log.d(TAG, "Other buttons disabled.");
     }
 }

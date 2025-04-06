@@ -1,0 +1,42 @@
+[
+  {
+  "name": "Cad Bane",
+  "imagePath": "cadbane",
+  "preferedAttack": false,
+  "meleAttack": 50,
+  "meleDefense": 60,
+  "rangedAttack": 95,
+  "rangedDefense": 75,
+  "maxHealth": 130
+},
+{
+"name": "Aurra Sing",
+"imagePath": "aurrasing",
+"preferedAttack": false,
+"meleAttack": 45,
+"meleDefense": 55,
+"rangedAttack": 100,
+"rangedDefense": 70,
+"maxHealth": 120
+},
+  {
+    "name": "Bossk",
+    "imagePath": "bossk",
+    "preferedAttack": true,
+    "meleAttack": 80,
+    "meleDefense": 85,
+    "rangedAttack": 60,
+    "rangedDefense": 65,
+    "maxHealth": 180
+  },
+  {
+    "name": "IG-88",
+    "imagePath": "ig88",
+    "preferedAttack": false,
+    "meleAttack": 70,
+    "meleDefense": 75,
+    "rangedAttack": 85,
+    "rangedDefense": 90,
+    "maxHealth": 200
+  }
+]

@@ -108,12 +108,12 @@
 
 
     <Button
-        android:id="@+id/btnCreateLutemon"
+        android:id="@+id/btnHireHunter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="#7AFF7A"
-        android:text="Create New Lutemon"
+        android:text="Hire New Bounty Hunter"
         android:textColor="#FFFFFF" />
 
 

@@ -8,26 +8,6 @@
     "rangedAttack": 90,
     "rangedDefense": 80,
     "maxHealth": 150
-  },
-  {
-    "name": "Bossk",
-    "imagePath": "bossk",
-    "preferedAttack": true,
-    "meleAttack": 80,
-    "meleDefense": 85,
-    "rangedAttack": 60,
-    "rangedDefense": 65,
-    "maxHealth": 180
-  },
-  {
-    "name": "IG-88",
-    "imagePath": "ig88",
-    "preferedAttack": false,
-    "meleAttack": 70,
-    "meleDefense": 75,
-    "rangedAttack": 85,
-    "rangedDefense": 90,
-    "maxHealth": 200
   }
 
 ]
