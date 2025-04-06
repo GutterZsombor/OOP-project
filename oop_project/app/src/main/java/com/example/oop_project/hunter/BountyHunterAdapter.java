@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -61,6 +62,22 @@ public class BountyHunterAdapter extends RecyclerView.Adapter<BountyHunterAdapte
             holder.rangedDefTextView.setText(String.valueOf(currentHunter.getRangedDefense()));
             holder.hpTextView.setText(String.valueOf(currentHunter.getMaxHealth()));
             holder.xpTextView.setText(String.valueOf(currentHunter.getExperience()));
+            holder.checkBox.setChecked(currentHunter.isSelected());
+
+            holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    // Unselect all other checkboxes
+                    for (BountyHunter otherHunter : bountyHunters) {
+                        if (otherHunter != currentHunter) {
+                            otherHunter.setSelected(false);
+                        }
+                    }
+                    currentHunter.setSelected(true); // Select the current hunter
+                    notifyDataSetChanged(); // Update the RecyclerView
+                } else {
+                    currentHunter.setSelected(false); // Unselect this hunter
+                }
+            });
         } else {
             Log.e("BountyHunterAdapter", "Invalid position: " + position + ". Data size: " + bountyHunters.size());
         }
@@ -83,6 +100,7 @@ public class BountyHunterAdapter extends RecyclerView.Adapter<BountyHunterAdapte
         public TextView rangedDefTextView;
         public TextView hpTextView;
         public TextView xpTextView;
+        CheckBox checkBox;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -94,6 +112,7 @@ public class BountyHunterAdapter extends RecyclerView.Adapter<BountyHunterAdapte
             rangedDefTextView = itemView.findViewById(R.id.RangedDEFtext);
             hpTextView = itemView.findViewById(R.id.hptext);
             xpTextView = itemView.findViewById(R.id.xptext);
+            checkBox = itemView.findViewById(R.id.checkBox);
         }
     }
 }

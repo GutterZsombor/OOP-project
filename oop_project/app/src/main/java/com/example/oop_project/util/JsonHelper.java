@@ -2,6 +2,7 @@ package com.example.oop_project.util;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.oop_project.hunter.BountyHunter;
 import com.google.gson.Gson;
@@ -113,6 +114,21 @@ public class JsonHelper {
             } catch (IOException e) {
                 Log.e(TAG, "Failed to copy " + fileName + ": " + e.getMessage(), e);
             }
+        }
+    }
+    public static void saveUpdatedHunter(Context context, BountyHunter updatedHunter, String fileName) {
+        List<BountyHunter> allHunters = JsonHelper.loadBountyHunters(context, fileName);
+
+        for (int i = 0; i < allHunters.size(); i++) {
+            if (allHunters.get(i).getName().equals(updatedHunter.getName())) {
+                allHunters.set(i, updatedHunter);
+                break;
+            }
+        }
+
+        boolean saved = JsonHelper.saveBountyHunters(context, allHunters, fileName);
+        if (!saved) {
+            Log.d(TAG, "Failed to save updated hunter.");
         }
     }
 

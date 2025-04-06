@@ -1,6 +1,8 @@
 package com.example.oop_project.hunter;
 
-public class BountyHunter {
+import java.io.Serializable;
+
+public class BountyHunter implements Serializable {
     // Static field to track number of created bounty hunters
     private static int idCounter = 0;
 
@@ -17,6 +19,7 @@ public class BountyHunter {
     private int maxHealth;
     private int id;
     private Statistic statistic;
+    private boolean isSelected;
 
     // Constructor
     public BountyHunter(String name, String imagePath, boolean preferedAttack,
@@ -34,6 +37,7 @@ public class BountyHunter {
         this.experience = 0;
         this.id = idCounter++;
         this.statistic = new Statistic();
+        this.isSelected = false;
     }
 
     // Methods
@@ -103,4 +107,12 @@ public class BountyHunter {
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public Statistic getStatistic() { return statistic; }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 }
