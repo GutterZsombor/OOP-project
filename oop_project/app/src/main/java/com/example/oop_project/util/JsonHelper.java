@@ -150,6 +150,17 @@ public class JsonHelper {
         }
     }
 
+    public static BountyHunter loadOriginalHunter(Context context, String name) {
+        List<BountyHunter> allHunters = JsonHelper.loadBountyHunters(context, "bounty_hunters.json");
+        for (BountyHunter hunter : allHunters) {
+            if (hunter.getName().equals(name)) {
+                return hunter;
+            }
+        }
+        return null; // Return null if not found
+    }
+
+
 }
 
 

@@ -56,9 +56,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        //clean run
         //JsonHelper.DONOTUSEcopyJson( this,"not_hired_bounty_hunters.json");
         //JsonHelper.DONOTUSEcopyJson(this ,"my_bounty_hunters.json");
+        //JsonHelper.DONOTUSEcopyJson(this ,"bounty_hunters.json");
 
         // Disable other buttons for now
         btnViewTraining.setEnabled(false);

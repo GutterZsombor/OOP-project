@@ -67,15 +67,15 @@ public class BountyHunterAdapter extends RecyclerView.Adapter<BountyHunterAdapte
             holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
                     // Unselect all other checkboxes
-                    for (BountyHunter otherHunter : bountyHunters) {
-                        if (otherHunter != currentHunter) {
-                            otherHunter.setSelected(false);
-                        }
-                    }
-                    currentHunter.setSelected(true); // Select the current hunter
-                    notifyDataSetChanged(); // Update the RecyclerView
+                    //for (BountyHunter otherHunter : bountyHunters) {
+                        //if (otherHunter != currentHunter) {
+                           // otherHunter.setSelected(false);
+                        //}
+                   // }
+                    currentHunter.setSelected(true);
+                    notifyDataSetChanged();
                 } else {
-                    currentHunter.setSelected(false); // Unselect this hunter
+                    currentHunter.setSelected(false);
                 }
             });
         } else {

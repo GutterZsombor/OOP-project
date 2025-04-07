@@ -4,11 +4,13 @@ import static java.security.AccessController.getContext;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +32,8 @@ import java.util.List;
 public class TrainActivity extends AppCompatActivity {
 
     private Button btnTrainMelee, btnTrainRange, btnTrainXP, btnMoveHome;
+    private ProgressBar trainingProgress;
+    private TextView textViewTrainingProg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,9 @@ public class TrainActivity extends AppCompatActivity {
         btnTrainRange = findViewById(R.id.btnTrainRange);
         btnTrainXP = findViewById(R.id.btnTrainXP);
         btnMoveHome = findViewById(R.id.btnMoveHome);
+        trainingProgress = findViewById(R.id.trainingProgress);
+        textViewTrainingProg= findViewById(R.id.textViewTrainingProg);
+
 
 
 
@@ -81,37 +88,46 @@ public class TrainActivity extends AppCompatActivity {
 
         btnTrainMelee.setOnClickListener(v -> {
             if (selectedHunter != null) {
-                selectedHunter.setMeleAttack(selectedHunter.getMeleAttack() + 3);
-                selectedHunter.setMeleDefense(selectedHunter.getMeleDefense() + 3);
                 selectedHunter.setExperience(selectedHunter.getExperience() + 1);
-                JsonHelper.saveUpdatedHunter(this,selectedHunter, fileName);
-                Toast.makeText(this, "Melee training complete!", Toast.LENGTH_SHORT).show();
-                recreate(); // Refresh UI
+                trainingTimier(selectedHunter, () -> {
+                    selectedHunter.setMeleAttack(selectedHunter.getMeleAttack() + 3);
+                    selectedHunter.setMeleDefense(selectedHunter.getMeleDefense() + 3);
+
+                    JsonHelper.saveUpdatedHunter(this, selectedHunter, fileName);
+                    Toast.makeText(this, "Melee training complete!", Toast.LENGTH_SHORT).show();
+                });
+                //recreate();
             }
         });
 
         btnTrainRange.setOnClickListener(v -> {
             if (selectedHunter != null) {
-                selectedHunter.setRangedAttack(selectedHunter.getRangedAttack() + 3);
-                selectedHunter.setRangedDefense(selectedHunter.getRangedDefense() + 3);
                 selectedHunter.setExperience(selectedHunter.getExperience() + 1);
-                JsonHelper.saveUpdatedHunter(this,selectedHunter, fileName);
-                Toast.makeText(this, "Ranged training complete!", Toast.LENGTH_SHORT).show();
-                recreate();
+                trainingTimier(selectedHunter, () -> {
+                    selectedHunter.setRangedAttack(selectedHunter.getRangedAttack() + 3);
+                    selectedHunter.setRangedDefense(selectedHunter.getRangedDefense() + 3);
+
+                    JsonHelper.saveUpdatedHunter(this, selectedHunter, fileName);
+                    Toast.makeText(this, "Ranged training complete!", Toast.LENGTH_SHORT).show();
+                });
+                //recreate();
             }
         });
 
         btnTrainXP.setOnClickListener(v -> {
             if (selectedHunter != null) {
-                selectedHunter.setMeleAttack(selectedHunter.getMeleAttack() + 1);
-                selectedHunter.setMeleDefense(selectedHunter.getMeleDefense() + 1);
-                selectedHunter.setRangedAttack(selectedHunter.getRangedAttack() + 1);
-                selectedHunter.setRangedDefense(selectedHunter.getRangedDefense() + 1);
-                selectedHunter.setMaxHealth(selectedHunter.getMaxHealth() + 1);
                 selectedHunter.setExperience(selectedHunter.getExperience() + 5);
-                JsonHelper.saveUpdatedHunter(this,selectedHunter, fileName);
-                Toast.makeText(this, "XP training complete!", Toast.LENGTH_SHORT).show();
-                recreate();
+                trainingTimier(selectedHunter, () -> {
+                    selectedHunter.setMeleAttack(selectedHunter.getMeleAttack() + 1);
+                    selectedHunter.setMeleDefense(selectedHunter.getMeleDefense() + 1);
+                    selectedHunter.setRangedAttack(selectedHunter.getRangedAttack() + 1);
+                    selectedHunter.setRangedDefense(selectedHunter.getRangedDefense() + 1);
+                    selectedHunter.setMaxHealth(selectedHunter.getMaxHealth() + 1);
+
+                    JsonHelper.saveUpdatedHunter(this, selectedHunter, fileName);
+                    Toast.makeText(this, "XP training complete!", Toast.LENGTH_SHORT).show();
+                });
+                //recreate();
             }
         });
 
@@ -122,4 +138,52 @@ public class TrainActivity extends AppCompatActivity {
             finish();
         });
     }
+
+    private void trainingTimier(BountyHunter hunter, Runnable onTrainingComplete) {
+        int xp = hunter.getExperience();
+        int duration = xp * 500; // 0.5 second per XP
+
+        trainingProgress.setProgress(0);
+        trainingProgress.setMax(duration);
+        textViewTrainingProg.setText("Training in Progress...");
+        disableButtons();
+
+        CountDownTimer timer = new CountDownTimer(duration, 100) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                int progress = duration - (int) millisUntilFinished;
+                trainingProgress.setProgress(progress);
+                disableButtons();
+            }
+
+            @Override
+            public void onFinish() {
+                trainingProgress.setProgress(duration);
+                trainingProgress.setProgress(0);
+
+                onTrainingComplete.run();
+                enableButtons();
+                recreate(); // Refresh UI
+                textViewTrainingProg.setText("Training Complete");
+
+            }
+        };
+
+        timer.start();
+    }
+
+    private void disableButtons() {
+        btnTrainMelee.setEnabled(false);
+        btnTrainRange.setEnabled(false);
+        btnTrainXP.setEnabled(false);
+        btnMoveHome.setEnabled(false);
+    }
+
+    private void enableButtons() {
+        btnTrainMelee.setEnabled(true);
+        btnTrainRange.setEnabled(true);
+        btnTrainXP.setEnabled(true);
+        btnMoveHome.setEnabled(true);
+    }
+
 }

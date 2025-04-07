@@ -37,6 +37,7 @@ public class HireHunterActivity extends AppCompatActivity implements HireableHun
 
         JsonHelper.copyJsonIfNotExists(this, "not_hired_bounty_hunters.json");
         JsonHelper.copyJsonIfNotExists(this, "my_bounty_hunters.json");
+        JsonHelper.copyJsonIfNotExists(this, "bounty_hunters.json");
 
         // Load hireable hunters (replace with your actual loading logic)
         loadHireableHunters();

@@ -82,7 +82,29 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
-    }
+        moveToBattle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<BountyHunter> selectedHunters = new ArrayList<>();
+                for (BountyHunter hunter : bountyHunters) {
+                    if (hunter.isSelected()) {
+                        selectedHunters.add(hunter);
+                    }
+                }
+
+                if (selectedHunters.size() == 2) {
+
+                    Intent intent = new Intent(HomeActivity.this, BattleActivity.class);
+                    intent.putExtra("hunter1", selectedHunters.get(0)); // First hunter
+                    intent.putExtra("hunter2", selectedHunters.get(1)); // Second hunter
+                    startActivity(intent);
+                } else {
+
+                    Toast.makeText(HomeActivity.this, "Please select exactly two bounty hunter", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        }
 
     private void loadBountyHunters() {
         List<BountyHunter> loadedHunters = JsonHelper.loadBountyHunters(this, "my_bounty_hunters.json");

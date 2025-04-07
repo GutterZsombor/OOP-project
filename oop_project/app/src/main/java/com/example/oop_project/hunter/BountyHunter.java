@@ -41,19 +41,23 @@ public class BountyHunter implements Serializable {
     }
 
     // Methods
-    public BountyHunter meleDefense(BountyHunter attacker) {
-        // Implement melee defense logic
-        // This might modify the current bounty hunter's state
-        // or the attacker's state
+    public int meleDefense(BountyHunter attacker) {
 
-        int damage = attacker.meleAttack() - this.meleDefense;
+        int damage=2;
+        int atkdef=attacker.meleAttack() - this.meleDefense;
+        int xpdiff=attacker.getExperience() - this.experience;
+        damage += (int) Math.ceil((atkdef+xpdiff) *0.75);
         if (damage > 0) {
             this.health -= damage;
             if (this.health < 0) {
                 this.health = 0;
             }
         }
-        return this;
+        else {
+            damage=3; //min 3 damage
+        }
+        //System.out.println(damage);
+        return damage;
     }
 
     public int meleAttack() {
@@ -61,15 +65,21 @@ public class BountyHunter implements Serializable {
         return this.meleAttack;
     }
 
-    public BountyHunter rangedDefense(BountyHunter attacker) {
-        int damage = attacker.rangedAttack() - this.rangedDefense;
+    public int rangedDefense(BountyHunter attacker) {
+        int damage=2;
+        int atkdef=attacker.rangedAttack() - this.rangedDefense;
+        int xpdiff=attacker.getExperience() - this.experience;
+        damage += (int) Math.ceil((atkdef+xpdiff) *0.75);
         if (damage > 0) {
             this.health -= damage;
             if (this.health < 0) {
                 this.health = 0;
             }
+        } else {
+            damage=3;
         }
-        return this;
+        //System.out.println(damage);
+        return damage;
     }
 
     public int rangedAttack() {
