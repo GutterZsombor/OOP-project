@@ -27,7 +27,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private BountyHunterAdapter adapter;
-    private final List<BountyHunter> bountyHunters = new ArrayList<>();
+    private  List<BountyHunter> bountyHunters = new ArrayList<>();
 
     private static final String TAG = "HomeActivity";
 
@@ -48,7 +48,7 @@ public class HomeActivity extends AppCompatActivity {
         moveToTraining = findViewById(R.id.movetoTraining);
         moveToBattle = findViewById(R.id.MovetoBattle);
 
-        Log.d("HomeActivity", "RecyclerView found: " + (recyclerView != null)); // Check if recyclerView is found
+        Log.d(TAG, "RecyclerView found: " + (recyclerView != null)); // Check if recyclerView is found
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Initialize the adapter with the (initially empty) list
@@ -57,7 +57,7 @@ public class HomeActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter); // Set the adapter **before** loading data
         Log.d("HomeActivity", "Adapter set on RecyclerView.");
 
-        // Load bounty hunters from JSON using JsonHelper
+
         loadBountyHunters();
 
 
@@ -114,7 +114,7 @@ public class HomeActivity extends AppCompatActivity {
             bountyHunters.addAll(loadedHunters);
 
             for (BountyHunter hunter : bountyHunters) {
-                hunter.setSelected(false); // or setChecked(false), etc.
+                hunter.setSelected(false);
             }
             runOnUiThread(new Runnable() {
                 @Override

@@ -149,13 +149,13 @@ public class BattleActivity extends AppCompatActivity {
             log += "Tempo bonus applied: " + tempoDamage + " additional damage.\n";
         }
 
-        log += "\n";  // New line for separation
+        log += "\n";
         battleLog.append(log);
 
-        // Update HP bars
+
         updateHPBars();
 
-        // Check if the defender is defeated
+        // defeated
         if (defender.getHealth() <= 0) {
             battleLog.append(defender.getName() + " is defeated!\n");
             nextAttackBtn.setEnabled(false);

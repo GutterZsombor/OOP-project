@@ -20,7 +20,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private Button btnViewHome;
-    private Button btnViewTraining;
+    private Button btnViewStatistics;
     private Button btnViewBattle;
     private Button btnHireHunter;
 
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         btnViewHome = findViewById(R.id.btnViewHome);
-        btnViewTraining = findViewById(R.id.btnViewTraining);
+        btnViewStatistics = findViewById(R.id.btnViewStatistics);
         btnViewBattle = findViewById(R.id.btnViewBattle);
         btnHireHunter = findViewById(R.id.btnHireHunter);
 
@@ -60,9 +60,25 @@ public class MainActivity extends AppCompatActivity {
         //JsonHelper.DONOTUSEcopyJson( this,"not_hired_bounty_hunters.json");
         //JsonHelper.DONOTUSEcopyJson(this ,"my_bounty_hunters.json");
         //JsonHelper.DONOTUSEcopyJson(this ,"bounty_hunters.json");
+        //JsonHelper.DONOTUSEcopyJson(this ,"Statisticsexample.json");
+        //JsonHelper.DONOTUSEcopyJson(this ,"Statistics.json");
+
+        JsonHelper.copyJsonIfNotExists( this,"not_hired_bounty_hunters.json");
+        JsonHelper.copyJsonIfNotExists(this ,"my_bounty_hunters.json");
+        JsonHelper.copyJsonIfNotExists(this ,"bounty_hunters.json");
+        JsonHelper.copyJsonIfNotExists(this ,"Statisticsexample.json");
+        JsonHelper.copyJsonIfNotExists(this ,"Statistics.json");
+
 
         // Disable other buttons for now
-        btnViewTraining.setEnabled(false);
+        btnViewStatistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Hire Hunter button clicked");
+                Intent intent = new Intent(MainActivity.this, StatisticsActivity.class);
+                startActivity(intent);
+            }
+        });
         btnViewBattle.setEnabled(false);
 
         Log.d(TAG, "Other buttons disabled.");

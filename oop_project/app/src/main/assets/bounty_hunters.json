@@ -49,5 +49,35 @@
     "rangedDefense": 70,
     "maxHealth": 120
   }
+  ,{
+  "name": "Mando",
+  "imagePath": "mando",
+  "preferedAttack": true,
+  "meleAttack": 45,
+  "meleDefense": 55,
+  "rangedAttack": 100,
+  "rangedDefense": 70,
+  "maxHealth": 120
+},
+  {
+  "name": "BX-7",
+  "imagePath": "bx7",
+  "preferedAttack": true,
+  "meleAttack": 45,
+  "meleDefense": 55,
+  "rangedAttack": 100,
+  "rangedDefense": 70,
+  "maxHealth": 120
+  },
+  {
+  "name": "IG-11",
+  "imagePath": "ig11",
+  "preferedAttack": false,
+  "meleAttack": 45,
+  "meleDefense": 55,
+  "rangedAttack": 100,
+  "rangedDefense": 70,
+  "maxHealth": 120
+}
 
 ]

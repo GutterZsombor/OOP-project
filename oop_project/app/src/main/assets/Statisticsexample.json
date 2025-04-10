@@ -1,0 +1,58 @@
+{
+  "globalStats": {
+    "totalBountyHuntersHired": 5,
+    "totalLocalBattles": 14,
+    "totalOnlineBattles": 9,
+    "totalTrainingSessions": 33
+  },
+  "bountyHunterStats": [
+    {
+      "name": "Boba Fett",
+      "numberOfTrainingSessions": 7,
+      "defeated": ["Bossk", "Aurra Sing"],
+      "defeatedBy": ["Cad Bane","Mando","Bossk"]
+    },
+    {
+      "name": "Bossk",
+      "numberOfTrainingSessions": 6,
+      "defeated": ["IG-88"],
+      "defeatedBy": ["Boba Fett", "Cad Bane"]
+    },
+    {
+      "name": "IG-88",
+      "numberOfTrainingSessions": 4,
+      "defeated": ["Cad Bane","Bossk","Bossk","Bossk","Bossk","Bossk","Bossk","Boba Fett","Bossk"],
+      "defeatedBy": ["BX-7", "Aurra Sing","Aurra Sing","Bossk","Boba Fett","Cad Bane"]
+    },
+    {
+      "name": "Cad Bane",
+      "numberOfTrainingSessions": 10,
+      "defeated": ["Boba Fett", "Bossk"],
+      "defeatedBy": ["IG-88"]
+    },
+    {
+      "name": "Aurra Sing",
+      "numberOfTrainingSessions": 6,
+      "defeated": ["k"],
+      "defeatedBy": ["Boba Fett"]
+    },
+
+    {
+      "name": "Mando",
+      "numberOfTrainingSessions": 8,
+      "defeated": ["BX-7", "Aurra Sing","Aurra Sing"],
+      "defeatedBy": ["j"]
+    },{
+      "name": "BX-7",
+      "numberOfTrainingSessions": 5,
+      "defeated": ["IG-11", "Aurra Sing"],
+      "defeatedBy": ["Mando"]
+    },
+    {
+      "name": "IG-11",
+      "numberOfTrainingSessions": 3,
+      "defeated": ["d"],
+      "defeatedBy": ["BX-7"]
+    }
+  ]
+}

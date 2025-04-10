@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Statistic {
     // Fields
-    private List<Integer> wins;           // Stores IDs of hunters this one beat
-    private List<Integer> losts;          // Stores IDs of hunters this one lost to
+    private List<String> wins;           // Stores names of hunters this one beat
+    private List<String> losts;          // Stores Names of hunters this one lost to
     private int numberOfTrainingSessions; // Count of training sessions
 
     // Constructor
@@ -16,21 +16,21 @@ public class Statistic {
     }
 
     // Methods to get the lists
-    public List<Integer> getWins() {
+    public List<String> getWins() {
         return new ArrayList<>(wins); // Return copy to preserve encapsulation
     }
 
-    public List<Integer> getLost() {
+    public List<String> getLost() {
         return new ArrayList<>(losts); // Return copy to preserve encapsulation
     }
 
     // Methods to add wins/losses
-    public void addWin(int idOfLoser) {
-        wins.add(idOfLoser);
+    public void addWin(String nameOfLoser) {
+        wins.add(nameOfLoser);
     }
 
-    public void addLost(int idOfWinner) {
-        losts.add(idOfWinner);
+    public void addLost(String nameOfWinner) {
+        losts.add(nameOfWinner);
     }
 
     // Counting methods
@@ -50,7 +50,7 @@ public class Statistic {
         numberOfTrainingSessions++;
     }
 
-    // Optional: Method to get win/loss ratio
+
     public double getWinLossRatio() {
         if (losts.size() == 0) {
             return wins.size(); // Avoid division by zero

@@ -5,21 +5,29 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.oop_project.hunter.BountyHunter;
+import com.example.oop_project.hunter.Statistic;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class JsonHelper {
+
+    // Both Gson and JSONObject is used for parsing JSON.
     private static final String TAG = "JsonHelper";
 
     /*public static List<BountyHunter> loadBountyHunters(Context context, String fileName) {
@@ -48,6 +56,130 @@ public class JsonHelper {
         }
         return bountyHunters;
     }*/
+    public static JSONObject loadJson(Context context, String fileName) {
+        try {
+            FileInputStream fis = context.openFileInput(fileName);
+            byte[] data = new byte[fis.available()];
+            fis.read(data);
+            fis.close();
+            return new JSONObject(new String(data));
+        } catch (Exception e) {
+            Log.e(TAG, "Error loading JSON: " + e.getMessage());
+            return new JSONObject();
+        }
+    }
+
+    public static void saveJson(Context context, JSONObject jsonObject, String fileName) {
+        try {
+            FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            writer.write(jsonObject.toString());
+            writer.close();
+            fos.close();
+        } catch (Exception e) {
+            Log.e(TAG, "Error saving JSON: " + e.getMessage());
+        }
+    }
+
+
+    public static int[] loadGlobalStats(Context context, String fileName) {
+        JSONObject root = loadJson(context, fileName);
+        JSONObject globalStats = root.optJSONObject("globalStats");
+        if (globalStats == null) return new int[]{0, 0, 0, 0};
+        return new int[]{
+                globalStats.optInt("totalHired", 0),
+                globalStats.optInt("localBattles", 0),
+                globalStats.optInt("onlineBattles", 0),
+                globalStats.optInt("trainingSessions", 0)
+        };
+    }
+
+
+    public static void updateGlobalStats(Context context, JSONObject newStats, String fileName) {
+        JSONObject root = loadJson(context, fileName);
+        try {
+            root.put("globalStats", newStats);
+            saveJson(context, root, fileName);
+        } catch (Exception e) {
+            Log.e(TAG, "Error updating global stats: " + e.getMessage());
+        }
+    }
+
+
+    public static Statistic loadHunterStatistic(Context context, String name, String fileName) {
+        JSONObject root = loadJson(context, fileName);
+        JSONArray hunters = root.optJSONArray("bountyHunterStats");
+        if (hunters != null) {
+            for (int i = 0; i < hunters.length(); i++) {
+                JSONObject obj = hunters.optJSONObject(i);
+                if (obj != null && name.equals(obj.optString("name"))) {
+                    Statistic stat = new Statistic();
+
+                    int sessions = obj.optInt("numberOfTrainingSessions", 0);
+                    for (int s = 0; s < sessions; s++) {
+                        stat.addNumberOfTrainingSessions();
+                    }
+
+                    JSONArray wins = obj.optJSONArray("defeated");
+                    if (wins != null) {
+                        for (int j = 0; j < wins.length(); j++) {
+                            stat.addWin(wins.optString(j));
+                        }
+                    }
+                    JSONArray losts = obj.optJSONArray("defeatedBy");
+                    if (losts != null) {
+                        for (int j = 0; j < losts.length(); j++) {
+                            stat.addLost(losts.optString(j));
+                        }
+                    }
+                    return stat;
+                }
+            }
+        }
+        return null;
+    }
+
+
+    public static void updateHunterStatistic(Context context, String name, Statistic stat, String fileName) {
+        JSONObject root = loadJson(context, fileName);
+        JSONArray hunters = root.optJSONArray("bountyHunterStats");
+        if (hunters == null) hunters = new JSONArray();
+
+        try {
+            // Remove existing entry if exists
+            for (int i = 0; i < hunters.length(); i++) {
+                JSONObject obj = hunters.getJSONObject(i);
+                if (name.equals(obj.getString("name"))) {
+                    hunters.remove(i);
+                    break;
+                }
+            }
+
+
+            JSONObject hunterObj = new JSONObject();
+            hunterObj.put("name", name);
+            hunterObj.put("numberOfTrainingSessions", stat.getNumberOfTrainingSessions());
+
+            JSONArray winArray = new JSONArray();
+            for (String nameOfLoser : stat.getWins()) {
+                winArray.put(nameOfLoser);
+            }
+            hunterObj.put("defeated", winArray);
+
+            JSONArray lostArray = new JSONArray();
+            for (String nameOfWinner : stat.getLost()) {
+                lostArray.put(nameOfWinner);
+            }
+            hunterObj.put("defeatedBy", lostArray);
+
+            hunters.put(hunterObj);
+            root.put("bountyHunterStats", hunters);
+            saveJson(context, root, fileName);
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error updating hunter stats: " + e.getMessage());
+        }
+    }
 
     public static List<BountyHunter> loadBountyHunters(Context context, String fileName) {
         List<BountyHunter> bountyHunters = new ArrayList<>();

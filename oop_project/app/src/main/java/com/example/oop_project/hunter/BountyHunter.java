@@ -118,6 +118,10 @@ public class BountyHunter implements Serializable {
     public void setId(int id) { this.id = id; }
     public Statistic getStatistic() { return statistic; }
 
+    public void setStatistic(Statistic statistic) {
+        this.statistic = statistic;
+    }
+
     public boolean isSelected() {
         return isSelected;
     }
