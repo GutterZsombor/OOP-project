@@ -71,11 +71,10 @@ public class HireHunterActivity extends AppCompatActivity implements HireableHun
         Log.d(TAG, "Hiring hunter: " + hunter.getName());
         hireSelectedHunter();
 
-        //  Example: For now, just remove from the list and notify adapter (you'll need to adapt this to your actual data persistence)
+
         hireableHunters.remove(hunter);
         adapter.notifyDataSetChanged();
-        // You might also want to navigate back, show a confirmation, etc.
-        // finish();
+
     }
 
     private void hireSelectedHunter() {
@@ -116,5 +115,9 @@ public class HireHunterActivity extends AppCompatActivity implements HireableHun
             Log.e(TAG, "Failed to save hired hunter to my_bounty_hunters.json");
             Toast.makeText(this, "Failed to hire " + selectedHunter.getName() + ".", Toast.LENGTH_SHORT).show();
         }
+
+        int [] globalStats = JsonHelper.loadGlobalStats(this, "Statistics.json");
+        globalStats[0]++;
+        JsonHelper.updateGlobalStats(this, globalStats, "Statistics.json");
     }
 }

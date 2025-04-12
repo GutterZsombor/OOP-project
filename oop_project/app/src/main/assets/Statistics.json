@@ -1,0 +1,58 @@
+{
+  "globalStats": {
+    "totalBountyHuntersHired": 1,
+    "totalLocalBattles": 0,
+    "totalOnlineBattles": 0,
+    "totalTrainingSessions": 0
+  },
+  "bountyHunterStats": [
+    {
+      "name": "Boba Fett",
+      "numberOfTrainingSessions": 0,
+      "defeated": [],
+      "defeatedBy": []
+    },
+    {
+      "name": "Bossk",
+      "numberOfTrainingSessions": 0,
+      "defeated": [],
+      "defeatedBy": []
+    },
+    {
+      "name": "IG-88",
+      "numberOfTrainingSessions": 0,
+      "defeated": [],
+      "defeatedBy": []
+    },
+    {
+      "name": "Cad Bane",
+      "numberOfTrainingSessions": 0,
+      "defeated": [],
+      "defeatedBy": []
+    },
+    {
+      "name": "Aurra Sing",
+      "numberOfTrainingSessions": 0,
+      "defeated": [],
+      "defeatedBy": []
+    },
+    {
+      "name": "Mando",
+      "numberOfTrainingSessions": 0,
+      "defeated": [],
+      "defeatedBy": []
+    },
+    {
+      "name": "BX-7",
+      "numberOfTrainingSessions": 0,
+      "defeated": [],
+      "defeatedBy": []
+    },
+    {
+      "name": "IG-11",
+      "numberOfTrainingSessions": 0,
+      "defeated": [],
+      "defeatedBy": []
+    }
+  ]
+}

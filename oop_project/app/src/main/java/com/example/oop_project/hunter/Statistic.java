@@ -1,8 +1,10 @@
 package com.example.oop_project.hunter;
+import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Statistic {
+public class Statistic implements Serializable {
     // Fields
     private List<String> wins;           // Stores names of hunters this one beat
     private List<String> losts;          // Stores Names of hunters this one lost to
@@ -27,6 +29,10 @@ public class Statistic {
     // Methods to add wins/losses
     public void addWin(String nameOfLoser) {
         wins.add(nameOfLoser);
+
+        for (int i = 0; i < wins.size(); i++) {
+            System.out.println(wins.get(i));
+        }
     }
 
     public void addLost(String nameOfWinner) {
@@ -35,11 +41,11 @@ public class Statistic {
 
     // Counting methods
     public int getNumberOfWins() {
-        return wins.size();
+        if (wins.size() == 0) {return 0;}return wins.size();
     }
 
     public int getNumberOfLosts() {
-        return losts.size();
+        if (losts.size() == 0) {return 0;}return losts.size();
     }
 
     public int getNumberOfTrainingSessions() {
@@ -52,9 +58,11 @@ public class Statistic {
 
 
     public double getWinLossRatio() {
-        if (losts.size() == 0) {
-            return wins.size(); // Avoid division by zero
+        if (losts.size() == 0||wins.size()==0) {
+            return wins.size();
         }
-        return (double) wins.size() / losts.size();
+        double number = (double) wins.size() / losts.size();
+        double rounded = Math.round(number * 100.0) / 100.0;//round two 2 decimal
+        return rounded ;
     }
 }

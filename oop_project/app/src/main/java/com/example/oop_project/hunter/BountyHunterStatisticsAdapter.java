@@ -34,7 +34,7 @@ public class BountyHunterStatisticsAdapter extends RecyclerView.Adapter<BountyHu
         this.context = context;
         this.bountyHunters = bountyHunters;
         Log.w(TAG, "here");
-        //globalStats=JsonHelper.loadGlobalStats(context,"Statisticsexample.json") ;
+        //globalStats=JsonHelper.loadGlobalStats(context,"Statistic.json") ;
         //loadStats();
 
 

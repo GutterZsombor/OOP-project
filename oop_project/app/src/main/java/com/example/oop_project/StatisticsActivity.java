@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +32,11 @@ public class StatisticsActivity extends AppCompatActivity {
 
     private Button moveToMain;
 
+    private TextView hunterHired;
+    private TextView localBattles;
+    private TextView onlineBattles;
+    private TextView trainingSessions;
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -52,6 +58,10 @@ public class StatisticsActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerViewBountyHunters);
         moveToMain = findViewById(R.id.movetoMain);
+        hunterHired = findViewById(R.id.textHunterHired);
+        localBattles = findViewById(R.id.textLocalBat);
+        onlineBattles = findViewById(R.id.textOnlineBattle);
+        trainingSessions = findViewById(R.id.textTrainingSes);
 
         Log.d(TAG, "RecyclerView found: " + (recyclerView != null)); // Check if recyclerView is found
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -64,8 +74,18 @@ public class StatisticsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter); // Set the adapter before*loading data
         Log.d(TAG, "Adapter set on RecyclerView.");
 
-
         loadBountyHunters();
+
+        int [] globalStats = loadGlobalStats();
+
+
+        hunterHired.setText(String.valueOf(globalStats[0]));
+        localBattles.setText(String.valueOf(globalStats[1]));
+        onlineBattles.setText(String.valueOf(globalStats[2]));
+        trainingSessions.setText(String.valueOf(globalStats[3]));
+
+
+
 
 
         moveToMain.setOnClickListener(new View.OnClickListener() {
@@ -96,7 +116,7 @@ public class StatisticsActivity extends AppCompatActivity {
             /*for (BountyHunter hunter : bountyHunters) {
                 String hunterName = hunter.getName();
                 Log.w(TAG, hunterName);
-                Statistic hunterStat = JsonHelper.loadHunterStatistic(this, hunterName, "Statisticsexample.json");
+                Statistic hunterStat = JsonHelper.loadHunterStatistic(this, hunterName, "Statistic.json");
 
                 if (hunterStat != null) {
                     hunter.setStatistic(hunterStat);
@@ -121,11 +141,21 @@ public class StatisticsActivity extends AppCompatActivity {
         for (BountyHunter hunter : bountyHunters) {
             String hunterName = hunter.getName();
             Log.w(TAG, hunterName);
-            Statistic hunterStat = JsonHelper.loadHunterStatistic(this, hunterName, "Statisticsexample.json");
+            Statistic hunterStat = JsonHelper.loadHunterStatistic(this, hunterName, "Statistics.json");
 
             if (hunterStat != null) {
                 hunter.setStatistic(hunterStat);
             }
         }
     }
-}
+
+    private int[] loadGlobalStats() {
+
+        int[] globalStats = JsonHelper.loadGlobalStats(this,"Statistics.json");
+
+        return globalStats;
+
+        }
+
+    }
+

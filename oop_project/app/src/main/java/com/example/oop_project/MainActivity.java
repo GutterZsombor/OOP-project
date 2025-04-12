@@ -57,11 +57,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //clean run
-        //JsonHelper.DONOTUSEcopyJson( this,"not_hired_bounty_hunters.json");
-        //JsonHelper.DONOTUSEcopyJson(this ,"my_bounty_hunters.json");
-        //JsonHelper.DONOTUSEcopyJson(this ,"bounty_hunters.json");
-        //JsonHelper.DONOTUSEcopyJson(this ,"Statisticsexample.json");
-        //JsonHelper.DONOTUSEcopyJson(this ,"Statistics.json");
+/*
+        JsonHelper.DONOTUSEcopyJson( this,"not_hired_bounty_hunters.json");
+        JsonHelper.DONOTUSEcopyJson(this ,"my_bounty_hunters.json");
+        JsonHelper.DONOTUSEcopyJson(this ,"bounty_hunters.json");
+        JsonHelper.DONOTUSEcopyJson(this ,"Statisticsexample.json");
+        JsonHelper.DONOTUSEcopyJson(this ,"Statistics.json");
+*/
+
 
         JsonHelper.copyJsonIfNotExists( this,"not_hired_bounty_hunters.json");
         JsonHelper.copyJsonIfNotExists(this ,"my_bounty_hunters.json");

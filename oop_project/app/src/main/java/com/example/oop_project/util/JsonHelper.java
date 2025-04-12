@@ -87,18 +87,46 @@ public class JsonHelper {
         JSONObject globalStats = root.optJSONObject("globalStats");
         if (globalStats == null) return new int[]{0, 0, 0, 0};
         return new int[]{
-                globalStats.optInt("totalHired", 0),
-                globalStats.optInt("localBattles", 0),
-                globalStats.optInt("onlineBattles", 0),
-                globalStats.optInt("trainingSessions", 0)
+                globalStats.optInt("totalBountyHuntersHired", 0),
+                globalStats.optInt("totalLocalBattles", 0),
+                globalStats.optInt("totalOnlineBattles", 0),
+                globalStats.optInt("totalTrainingSessions", 0)
         };
     }
 
 
-    public static void updateGlobalStats(Context context, JSONObject newStats, String fileName) {
+    public static void updateGlobalStats(Context context, int[] globalStats, String fileName) {
         JSONObject root = loadJson(context, fileName);
+        if (root == null) {
+            Log.e(TAG, "Failed to load JSON file");
+            return;
+        }
+
         try {
-            root.put("globalStats", newStats);
+            // Get or create the globalStats object
+            JSONObject stats = root.optJSONObject("globalStats");
+            if (stats == null) {
+                stats = new JSONObject();
+            }
+
+
+
+            stats.put("totalBountyHuntersHired", globalStats[0]);
+
+
+            stats.put("totalLocalBattles", globalStats[1]);
+
+
+            stats.put("totalOnlineBattles", globalStats[2]);
+
+
+            stats.put("totalTrainingSessions", globalStats[3]);
+
+
+
+            root.put("globalStats", stats);
+
+            // Save the updated JSON
             saveJson(context, root, fileName);
         } catch (Exception e) {
             Log.e(TAG, "Error updating global stats: " + e.getMessage());
@@ -181,7 +209,7 @@ public class JsonHelper {
         }
     }
 
-    public static List<BountyHunter> loadBountyHunters(Context context, String fileName) {
+    /*public static List<BountyHunter> loadBountyHunters(Context context, String fileName) {
         List<BountyHunter> bountyHunters = new ArrayList<>();
         try {
             File file = new File(context.getFilesDir(), fileName);
@@ -204,10 +232,45 @@ public class JsonHelper {
         }
         return bountyHunters;
     }
+*/
+
+    public static List<BountyHunter> loadBountyHunters(Context context, String fileName) {
+        List<BountyHunter> bountyHunters = new ArrayList<>();
+        try {
+            // Read the file content
+            FileInputStream fis = context.openFileInput(fileName);
+            byte[] data = new byte[fis.available()];
+            fis.read(data);
+            fis.close();
+
+            // Parse directly as JSONArray
+            JSONArray huntersArray = new JSONArray(new String(data));
+
+            for (int i = 0; i < huntersArray.length(); i++) {
+                JSONObject hunterJson = huntersArray.getJSONObject(i);
+
+                BountyHunter hunter = new BountyHunter(
+                        hunterJson.optString("name", ""),
+                        hunterJson.optString("imagePath", ""),
+                        hunterJson.optBoolean("preferedAttack", false),
+                        hunterJson.optInt("meleAttack", 0),
+                        hunterJson.optInt("meleDefense", 0),
+                        hunterJson.optInt("rangedAttack", 0),
+                        hunterJson.optInt("rangedDefense", 0),
+                        hunterJson.optInt("maxHealth", 100),
+                        hunterJson.optInt("experience", 0)
+                );
+
+                bountyHunters.add(hunter);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error loading bounty hunters: " + e.getMessage());
+        }
+        return bountyHunters;
+    }
 
 
-
-    public static boolean saveBountyHunters(Context context, List<BountyHunter> bountyHunters, String fileName) {
+   /* public static boolean saveBountyHunters(Context context, List<BountyHunter> bountyHunters, String fileName) {
         File file = new File(context.getFilesDir(), fileName); // Get the file object
         String absolutePath = file.getAbsolutePath();  // Get the absolute path
 
@@ -227,6 +290,39 @@ public class JsonHelper {
 
         } catch (IOException e) {
             Log.e("JsonHelper", "Error saving to " + absolutePath + ": " + e.getMessage(), e); // Use absolutePath
+            return false;
+        }
+    }*/
+
+    public static boolean saveBountyHunters(Context context, List<BountyHunter> bountyHunters, String fileName) {
+        try {
+            JSONArray huntersArray = new JSONArray();
+
+            for (BountyHunter hunter : bountyHunters) {
+                JSONObject hunterJson = new JSONObject();
+                hunterJson.put("name", hunter.getName());
+                hunterJson.put("imagePath", hunter.getImagePath());
+                hunterJson.put("preferedAttack", hunter.isPreferedAttack());
+                hunterJson.put("meleAttack", hunter.getMeleAttack());
+                hunterJson.put("meleDefense", hunter.getMeleDefense());
+                hunterJson.put("rangedAttack", hunter.getRangedAttack());
+                hunterJson.put("rangedDefense", hunter.getRangedDefense());
+                hunterJson.put("maxHealth", hunter.getMaxHealth());
+                hunterJson.put("experience", hunter.getExperience());
+
+                huntersArray.put(hunterJson);
+            }
+
+            // Save the JSONArray directly
+            FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            OutputStreamWriter writer = new OutputStreamWriter(fos);
+            writer.write(huntersArray.toString());
+            writer.close();
+            fos.close();
+
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, "Error saving bounty hunters: " + e.getMessage());
             return false;
         }
     }

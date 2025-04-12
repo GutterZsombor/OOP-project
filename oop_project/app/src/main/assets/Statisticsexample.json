@@ -1,56 +1,56 @@
 {
   "globalStats": {
-    "totalBountyHuntersHired": 5,
-    "totalLocalBattles": 14,
-    "totalOnlineBattles": 9,
-    "totalTrainingSessions": 33
+    "totalBountyHuntersHired": 0,
+    "totalLocalBattles": 0,
+    "totalOnlineBattles": 0,
+    "totalTrainingSessions": 0
   },
   "bountyHunterStats": [
     {
       "name": "Boba Fett",
-      "numberOfTrainingSessions": 7,
+      "numberOfTrainingSessions": 0,
       "defeated": ["Bossk", "Aurra Sing"],
-      "defeatedBy": ["Cad Bane","Mando","Bossk"]
+      "defeatedBy": []
     },
     {
       "name": "Bossk",
-      "numberOfTrainingSessions": 6,
-      "defeated": ["IG-88"],
-      "defeatedBy": ["Boba Fett", "Cad Bane"]
+      "numberOfTrainingSessions": 0,
+      "defeated": [],
+      "defeatedBy": []
     },
     {
       "name": "IG-88",
-      "numberOfTrainingSessions": 4,
+      "numberOfTrainingSessions": 0,
       "defeated": ["Cad Bane","Bossk","Bossk","Bossk","Bossk","Bossk","Bossk","Boba Fett","Bossk"],
       "defeatedBy": ["BX-7", "Aurra Sing","Aurra Sing","Bossk","Boba Fett","Cad Bane"]
     },
     {
       "name": "Cad Bane",
-      "numberOfTrainingSessions": 10,
+      "numberOfTrainingSessions": 0,
       "defeated": ["Boba Fett", "Bossk"],
-      "defeatedBy": ["IG-88"]
+      "defeatedBy": []
     },
     {
       "name": "Aurra Sing",
-      "numberOfTrainingSessions": 6,
+      "numberOfTrainingSessions": 0,
       "defeated": ["k"],
       "defeatedBy": ["Boba Fett"]
     },
 
     {
       "name": "Mando",
-      "numberOfTrainingSessions": 8,
+      "numberOfTrainingSessions": 0,
       "defeated": ["BX-7", "Aurra Sing","Aurra Sing"],
       "defeatedBy": ["j"]
     },{
       "name": "BX-7",
-      "numberOfTrainingSessions": 5,
+      "numberOfTrainingSessions": 0,
       "defeated": ["IG-11", "Aurra Sing"],
       "defeatedBy": ["Mando"]
     },
     {
       "name": "IG-11",
-      "numberOfTrainingSessions": 3,
+      "numberOfTrainingSessions": 0,
       "defeated": ["d"],
       "defeatedBy": ["BX-7"]
     }

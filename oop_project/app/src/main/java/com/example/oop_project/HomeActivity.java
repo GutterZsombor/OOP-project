@@ -93,10 +93,22 @@ public class HomeActivity extends AppCompatActivity {
                 }
 
                 if (selectedHunters.size() == 2) {
+                    int [] globalStats = JsonHelper.loadGlobalStats(HomeActivity.this, "Statistics.json");
+                    globalStats[1]++;
+                    JsonHelper.updateGlobalStats(HomeActivity.this, globalStats, "Statistics.json");
+
+
+                    BountyHunter hunter1 = selectedHunters.get(0);
+                    BountyHunter hunter2 = selectedHunters.get(1);
+
+                    if (hunter1 == null || hunter2 == null) {
+                        Log.e(TAG, "Selected hunters are null. Cannot start battle.");
+                        return;
+                    }
 
                     Intent intent = new Intent(HomeActivity.this, BattleActivity.class);
-                    intent.putExtra("hunter1", selectedHunters.get(0)); // First hunter
-                    intent.putExtra("hunter2", selectedHunters.get(1)); // Second hunter
+                    intent.putExtra("myHunter", hunter1); // First hunter
+                    intent.putExtra("enemyHunter", hunter2); // Second hunter
                     startActivity(intent);
                 } else {
 

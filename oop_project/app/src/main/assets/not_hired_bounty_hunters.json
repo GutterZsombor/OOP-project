@@ -7,7 +7,8 @@
   "meleDefense": 60,
   "rangedAttack": 95,
   "rangedDefense": 75,
-  "maxHealth": 130
+  "maxHealth": 130,
+    "experience": 0
 },
 {
 "name": "Aurra Sing",
@@ -17,7 +18,8 @@
 "meleDefense": 55,
 "rangedAttack": 100,
 "rangedDefense": 70,
-"maxHealth": 120
+"maxHealth": 120,
+  "experience": 0
 },
   {
     "name": "Bossk",
@@ -27,7 +29,8 @@
     "meleDefense": 85,
     "rangedAttack": 60,
     "rangedDefense": 65,
-    "maxHealth": 180
+    "maxHealth": 180,
+    "experience": 0
   },
   {
     "name": "IG-88",
@@ -37,7 +40,8 @@
     "meleDefense": 75,
     "rangedAttack": 85,
     "rangedDefense": 90,
-    "maxHealth": 200
+    "maxHealth": 200,
+    "experience": 0
   }
 ,{
   "name": "Mando",
@@ -47,7 +51,8 @@
   "meleDefense": 55,
   "rangedAttack": 100,
   "rangedDefense": 70,
-  "maxHealth": 120
+  "maxHealth": 120,
+  "experience": 0
 },
   {
     "name": "BX-7",
@@ -57,7 +62,8 @@
     "meleDefense": 55,
     "rangedAttack": 100,
     "rangedDefense": 70,
-    "maxHealth": 120
+    "maxHealth": 120,
+    "experience": 0
   },
   {
     "name": "IG-11",
@@ -67,7 +73,8 @@
     "meleDefense": 55,
     "rangedAttack": 100,
     "rangedDefense": 70,
-    "maxHealth": 120
+    "maxHealth": 120,
+    "experience": 0
   }
 
 ]

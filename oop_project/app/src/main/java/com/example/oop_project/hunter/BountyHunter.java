@@ -24,7 +24,7 @@ public class BountyHunter implements Serializable {
     // Constructor
     public BountyHunter(String name, String imagePath, boolean preferedAttack,
                         int meleAttack, int meleDefense, int rangedAttack,
-                        int rangedDefense, int maxHealth) {
+                        int rangedDefense, int maxHealth,int experience) {
         this.name = name;
         this.imagePath = imagePath;
         this.preferedAttack = preferedAttack;
@@ -34,7 +34,7 @@ public class BountyHunter implements Serializable {
         this.rangedDefense = rangedDefense;
         this.maxHealth = maxHealth;
         this.health = maxHealth;
-        this.experience = 0;
+        this.experience = experience;
         this.id = idCounter++;
         this.statistic = new Statistic();
         this.isSelected = false;
@@ -46,7 +46,7 @@ public class BountyHunter implements Serializable {
         int damage=2;
         int atkdef=attacker.meleAttack() - this.meleDefense;
         int xpdiff=attacker.getExperience() - this.experience;
-        damage += (int) Math.ceil((atkdef+xpdiff) *0.75);
+        damage += (int) Math.ceil((atkdef+(xpdiff)*0.5) *0.75);
         if (damage > 0) {
             this.health -= damage;
             if (this.health < 0) {
@@ -69,7 +69,7 @@ public class BountyHunter implements Serializable {
         int damage=2;
         int atkdef=attacker.rangedAttack() - this.rangedDefense;
         int xpdiff=attacker.getExperience() - this.experience;
-        damage += (int) Math.ceil((atkdef+xpdiff) *0.75);
+        damage += (int) Math.ceil((atkdef+(xpdiff)*0.5) *0.75);
         if (damage > 0) {
             this.health -= damage;
             if (this.health < 0) {

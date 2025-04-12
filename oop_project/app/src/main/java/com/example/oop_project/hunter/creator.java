@@ -13,7 +13,8 @@ public class creator {
                 65,     // melee defense
                 90,     // ranged attack
                 85,     // ranged defense
-                100     // max health
+                100    ,//max healt
+                0// xp
         );
     }
 
@@ -26,7 +27,8 @@ public class creator {
                 60,     // melee defense
                 95,     // ranged attack
                 80,     // ranged defense
-                90      // max health
+                90  ,    // max health
+                0// xp
         );
     }
 
@@ -39,7 +41,8 @@ public class creator {
                 55,     // melee defense
                 85,     // ranged attack
                 75,     // ranged defense
-                85      // max health
+                85 ,     // max health
+                0// xp
         );
     }
 
@@ -52,7 +55,8 @@ public class creator {
                 80,     // melee defense
                 70,     // ranged attack
                 65,     // ranged defense
-                120     // max health
+                120,    // max health
+                0// xp
         );
     }
 
@@ -65,7 +69,8 @@ public class creator {
                 85,     // melee defense
                 75,     // ranged attack
                 70,     // ranged defense
-                150     // max health (droid)
+                150  ,   // max health (droid)
+                0// xp
         );
     }
 

@@ -7,7 +7,10 @@
     "meleDefense": 70,
     "rangedAttack": 90,
     "rangedDefense": 80,
-    "maxHealth": 150
+    "maxHealth": 150,
+    "experience": 0
   }
+
+
 
 ]
