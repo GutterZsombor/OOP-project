@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/moveMain"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -52,6 +52,23 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Move to Battle" />
+
+        <Button
+            android:id="@+id/MovetoOnlineBattle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Online Battle" />
+
     </LinearLayout>
+    <Button
+        android:id="@+id/moveMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Move to Main" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

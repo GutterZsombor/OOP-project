@@ -24,7 +24,7 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/selectedHunterText"
+                android:id="@+id/Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Selected Hunter"
@@ -42,7 +42,7 @@
                 android:layout_marginBottom="8dp"/>
 
             <TextView
-                android:id="@+id/hunterName"
+                android:id="@+id/hunterNameText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Hunter Name"

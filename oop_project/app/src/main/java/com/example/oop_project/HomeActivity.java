@@ -31,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = "HomeActivity";
 
-    private Button moveToTraining, moveToBattle;
+    private Button moveToTraining, moveToBattle,movetoOnlineBattle,movetoMain;
     private CheckBox selectedCheckBox;
     @Override
     protected void onResume() {
@@ -47,6 +47,8 @@ public class HomeActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewBountyHunters);
         moveToTraining = findViewById(R.id.movetoTraining);
         moveToBattle = findViewById(R.id.MovetoBattle);
+        movetoOnlineBattle = findViewById(R.id.MovetoOnlineBattle);
+        movetoMain = findViewById(R.id.moveMain);
 
         Log.d(TAG, "RecyclerView found: " + (recyclerView != null)); // Check if recyclerView is found
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -114,6 +116,52 @@ public class HomeActivity extends AppCompatActivity {
 
                     Toast.makeText(HomeActivity.this, "Please select exactly two bounty hunter", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        movetoOnlineBattle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<BountyHunter> selectedHunters = new ArrayList<>();
+                for (BountyHunter hunter : bountyHunters) {
+                    if (hunter.isSelected()) {
+                        selectedHunters.add(hunter);
+                    }
+                }
+
+                if (selectedHunters.size() == 1) {
+                    int [] globalStats = JsonHelper.loadGlobalStats(HomeActivity.this, "Statistics.json");
+                    globalStats[2]++;
+                    JsonHelper.updateGlobalStats(HomeActivity.this, globalStats, "Statistics.json");
+
+
+                    BountyHunter hunter1 = selectedHunters.get(0);
+
+
+                    if (hunter1 == null ) {
+                        Log.e(TAG, "Selected hunter is null. Cannot start online battle.");
+                        return;
+                    }
+
+                    Intent intent = new Intent(HomeActivity.this, MultiplayerSetupActivity.class);
+                    intent.putExtra("selectedHunter", hunter1); // First hunter
+                    //intent.putExtra("enemyHunter", hunter2); // Second hunter
+                    startActivity(intent);
+                } else {
+
+                    Toast.makeText(HomeActivity.this, "Please select exactly One bounty hunter", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        movetoMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+
+                    startActivity(intent);
+
             }
         });
         }

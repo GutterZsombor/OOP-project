@@ -24,14 +24,22 @@
       </SelectionState>
       <SelectionState runConfigName="MainActivity">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-04-05T16:15:26.839734900Z">
+        <DropdownSelection timestamp="2025-04-14T18:48:58.731289100Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\tejfo\.android\avd\Pixel_XL_API_29.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=5200e50f43b7b591" />
             </handle>
           </Target>
         </DropdownSelection>
-        <DialogSelection />
+        <DialogSelection>
+          <targets>
+            <Target type="DEFAULT_BOOT">
+              <handle>
+                <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\tejfo\.android\avd\Pixel_2_API_26.avd" />
+              </handle>
+            </Target>
+          </targets>
+        </DialogSelection>
       </SelectionState>
       <SelectionState runConfigName="HomeActivity (4)">
         <option name="selectionMode" value="DROPDOWN" />

@@ -1,5 +1,7 @@
 package com.example.oop_project.hunter;
 
+import com.google.gson.Gson;
+
 import java.io.Serializable;
 
 public class BountyHunter implements Serializable {
@@ -48,8 +50,8 @@ public class BountyHunter implements Serializable {
         int xpdiff=attacker.getExperience() - this.experience;
         damage += (int) Math.ceil((atkdef+(xpdiff)*0.5) *0.75);
         if (damage > 0) {
-            this.health -= damage;
-            if (this.health < 0) {
+            //this.health -= damage;
+            if ((this.health-damage) < 0) {
                 this.health = 0;
             }
         }
@@ -71,8 +73,8 @@ public class BountyHunter implements Serializable {
         int xpdiff=attacker.getExperience() - this.experience;
         damage += (int) Math.ceil((atkdef+(xpdiff)*0.5) *0.75);
         if (damage > 0) {
-            this.health -= damage;
-            if (this.health < 0) {
+            //this.health -= damage;
+            if ((this.health-damage) < 0) {
                 this.health = 0;
             }
         } else {
@@ -128,5 +130,13 @@ public class BountyHunter implements Serializable {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public String toJson() {
+        return new Gson().toJson(this);
+    }
+
+    public static BountyHunter fromJson(String json) {
+        return new Gson().fromJson(json, BountyHunter.class);
     }
 }

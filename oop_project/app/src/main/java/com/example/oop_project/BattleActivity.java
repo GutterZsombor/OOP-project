@@ -92,7 +92,14 @@ public class BattleActivity extends AppCompatActivity implements NetworkManager.
             fight();
         });
 
-        endBattleBtn.setOnClickListener(v -> finish());
+        endBattleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "End button clicked");
+                Intent intent = new Intent(BattleActivity.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initViews() {
@@ -138,6 +145,10 @@ public class BattleActivity extends AppCompatActivity implements NetworkManager.
             tempoDamage = (int) Math.ceil(damage * 0.30);
             damage += tempoDamage;
         }
+        else if(damage >16 ){
+            tempoDamage = (int) Math.ceil(damage * 0.20);
+            damage += tempoDamage;
+        }
 
         // Update defender's health
         int newHP = Math.max(0, defender.getHealth() - damage);
@@ -171,14 +182,18 @@ public class BattleActivity extends AppCompatActivity implements NetworkManager.
                 // Handle rewards locally
                 if (attacker == myHunter) {
                     rewardWinner(myHunter, enemyHunter);
+                    punishLoser(this, enemyHunter, myHunter);
                 } else {
+                    rewardWinner(enemyHunter, myHunter);
                     punishLoser(this, myHunter, enemyHunter);
                 }
             } else {
                 // Local battle handling
                 if (attacker == myHunter) {
                     rewardWinner(myHunter, enemyHunter);
+                    punishLoser(this, enemyHunter, myHunter);
                 } else {
+                    rewardWinner(enemyHunter, myHunter);
                     punishLoser(this, myHunter, enemyHunter);
                 }
             }
@@ -305,35 +320,37 @@ public class BattleActivity extends AppCompatActivity implements NetworkManager.
 
 
     public void rewardWinner(BountyHunter winner,BountyHunter loser) {
-        String fileName = "my_bounty_hunters.json";
-        // Increase all stats except XP by 10
-        winner.setMeleAttack(winner.getMeleAttack() + 10);
-        winner.setRangedAttack(winner.getRangedAttack() + 10);
-        winner.setMeleDefense(winner.getMeleDefense() + 10);
-        winner.setRangedDefense(winner.getRangedDefense() + 10);
-        winner.setMaxHealth(winner.getMaxHealth()+10); // Make sure health doesn't exceed max health
+        if(winner.getName()!="DefaultEnemy"&& loser.getName()!="DefaultEnemy") {
+            String fileName = "my_bounty_hunters.json";
+            // Increase all stats except XP by 10
+            winner.setMeleAttack(winner.getMeleAttack() + 10);
+            winner.setRangedAttack(winner.getRangedAttack() + 10);
+            winner.setMeleDefense(winner.getMeleDefense() + 10);
+            winner.setRangedDefense(winner.getRangedDefense() + 10);
+            winner.setMaxHealth(winner.getMaxHealth() + 10); // Make sure health doesn't exceed max health
 
-        // Increase XP by 3
-        winner.setExperience(winner.getExperience() + 3);
+            // Increase XP by 3
+            winner.setExperience(winner.getExperience() + 3);
 
-        // Log the reward
-        battleLog.append(winner.getName() + " wins! Stats increased\n\n");
+            // Log the reward
+            battleLog.append(winner.getName() + " wins! Stats increased\n\n");
 
-        // Save the updated hunter using the current context and file name
-        JsonHelper.saveUpdatedHunter(this, winner, fileName);
+            // Save the updated hunter using the current context and file name
+            JsonHelper.saveUpdatedHunter(this, winner, fileName);
 
-        Statistic winnerStat = JsonHelper.loadHunterStatistic(this, winner.getName(),"Statistics.json");
-        if (winnerStat != null) {
-            winnerStat.addWin(loser.getName());
-            JsonHelper.updateHunterStatistic(this, winner.getName(), winnerStat, "Statistics.json");
+            Statistic winnerStat = JsonHelper.loadHunterStatistic(this, winner.getName(), "Statistics.json");
+            if (winnerStat != null) {
+                winnerStat.addWin(loser.getName());
+                JsonHelper.updateHunterStatistic(this, winner.getName(), winnerStat, "Statistics.json");
+            }
         }
-
 
 
 
     }
 
     public static void punishLoser(Context context, BountyHunter loser,BountyHunter winner) {
+        if(winner.getName()!="DefaultEnemy"&& loser.getName()!="DefaultEnemy") {
         // Load all hired bounty hunters from my_bounty_hunters.json
         List<BountyHunter> allHiredHunters = JsonHelper.loadBountyHunters(context, "my_bounty_hunters.json");
         List<BountyHunter> allNotHiredHunters = JsonHelper.loadBountyHunters(context, "not_hired_bounty_hunters.json");
@@ -370,4 +387,4 @@ public class BattleActivity extends AppCompatActivity implements NetworkManager.
         }
 
     }
-}
+}}
