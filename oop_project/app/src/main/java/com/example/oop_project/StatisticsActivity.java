@@ -28,9 +28,9 @@ public class StatisticsActivity extends AppCompatActivity {
     private static final String TAG = "StatisticsActivity";
     private RecyclerView recyclerView;
     private BountyHunterStatisticsAdapter adapter;
-    private List<BountyHunter> bountyHunters = new ArrayList<>();
+    private final List<BountyHunter> bountyHunters = new ArrayList<>();
 
-    private Button moveToMain;
+    private Button moveToMain,movetoWin,movetoLose,movetoBattle;
 
     private TextView hunterHired;
     private TextView localBattles;
@@ -58,6 +58,9 @@ public class StatisticsActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerViewBountyHunters);
         moveToMain = findViewById(R.id.movetoMain);
+        movetoWin = findViewById(R.id.viewWin);
+        movetoLose = findViewById(R.id.viewLose);
+        movetoBattle = findViewById(R.id.viewBattle);
         hunterHired = findViewById(R.id.textHunterHired);
         localBattles = findViewById(R.id.textLocalBat);
         onlineBattles = findViewById(R.id.textOnlineBattle);
@@ -97,9 +100,38 @@ public class StatisticsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        movetoWin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent intent = new Intent(StatisticsActivity.this, ChartActivity.class);
+                intent.putExtra("win", true);
+                startActivity(intent);
+            }
+        });
+        movetoLose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent intent = new Intent(StatisticsActivity.this, ChartActivity.class);
+                intent.putExtra("win", false);
+                startActivity(intent);
+            }
+        });
+        movetoBattle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent intent = new Intent(StatisticsActivity.this, ChartActivity.class);
+                intent.putExtra("total", true);
+                startActivity(intent);
+            }
+        });
 
     }
-
 
 
 
@@ -140,7 +172,7 @@ public class StatisticsActivity extends AppCompatActivity {
 
         for (BountyHunter hunter : bountyHunters) {
             String hunterName = hunter.getName();
-            Log.w(TAG, hunterName);
+            //Log.w(TAG, hunterName);
             Statistic hunterStat = JsonHelper.loadHunterStatistic(this, hunterName, "Statistics.json");
 
             if (hunterStat != null) {
@@ -155,7 +187,8 @@ public class StatisticsActivity extends AppCompatActivity {
 
         return globalStats;
 
-        }
-
     }
+
+}
+
 

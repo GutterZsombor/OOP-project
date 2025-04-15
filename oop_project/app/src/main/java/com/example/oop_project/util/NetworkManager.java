@@ -31,8 +31,8 @@ public class NetworkManager {
     private static final String SERVICE_TYPE = "_bountyhunter._tcp.";
     private static final String SERVICE_NAME = "BountyHunterBattle";
 
-    private Context context;
-    private NsdManager nsdManager;
+    private final Context context;
+    private final NsdManager nsdManager;
     private NsdManager.RegistrationListener registrationListener;
     private NsdManager.DiscoveryListener discoveryListener;
     private NsdManager.ResolveListener resolveListener;
@@ -44,7 +44,7 @@ public class NetworkManager {
     private BattleNetworkCallback callback;
     private OnHunterReceivedListener hunterListener;
     private HunterReceivedListener hunterReceivedListener;
-    private Handler mainHandler;
+    private final Handler mainHandler;
     public interface HunterReceivedListener {
         void onHunterReceived(BountyHunter hunter);
     }

@@ -25,7 +25,7 @@ import java.util.List;
 
 public class BountyHunterStatisticsAdapter extends RecyclerView.Adapter<BountyHunterStatisticsAdapter.ViewHolder> {
     private final Context context;
-    private List<BountyHunter> bountyHunters;
+    private final List<BountyHunter> bountyHunters;
 
     private int[] globalStats;
 

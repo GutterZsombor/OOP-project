@@ -20,7 +20,7 @@ import java.util.List;
 public class BountyHunterAdapter extends RecyclerView.Adapter<BountyHunterAdapter.ViewHolder> {
 
     private final Context context;
-    private List<BountyHunter> bountyHunters;
+    private final List<BountyHunter> bountyHunters;
 
     public BountyHunterAdapter(Context context, List<BountyHunter> bountyHunters) {
         this.context = context;

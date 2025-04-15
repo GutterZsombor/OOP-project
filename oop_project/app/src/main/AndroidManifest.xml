@@ -68,5 +68,9 @@
             android:name=".MultiplayerSetupActivity"
             android:exported="false">
         </activity>
+        <activity
+            android:name=".ChartActivity"
+            android:exported="false">
+        </activity>
     </application>
 </manifest>

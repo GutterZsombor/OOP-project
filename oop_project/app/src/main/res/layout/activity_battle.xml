@@ -202,12 +202,7 @@
             android:layout_marginHorizontal="4dp">
 
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="20dp"
-                android:src="@drawable/red_arrow"
-                android:rotation="0"
-                android:layout_gravity="center" />
+
 
             <TextView
                 android:layout_width="wrap_content"

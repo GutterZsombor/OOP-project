@@ -27,7 +27,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private BountyHunterAdapter adapter;
-    private  List<BountyHunter> bountyHunters = new ArrayList<>();
+    private final List<BountyHunter> bountyHunters = new ArrayList<>();
 
     private static final String TAG = "HomeActivity";
 

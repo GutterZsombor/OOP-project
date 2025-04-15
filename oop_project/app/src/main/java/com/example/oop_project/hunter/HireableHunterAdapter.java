@@ -22,9 +22,9 @@ import java.util.List;
 public class HireableHunterAdapter extends RecyclerView.Adapter<HireableHunterAdapter.ViewHolder> {
 
     private final Context context;
-    private List<BountyHunter> hireableHunters;
+    private final List<BountyHunter> hireableHunters;
     private int selectedPosition = RecyclerView.NO_POSITION;
-    private OnHireClickListener listener; // Add a listener
+    private final OnHireClickListener listener; // Add a listener
 
     // Define the listener interface
     public interface OnHireClickListener {
@@ -73,7 +73,7 @@ public class HireableHunterAdapter extends RecyclerView.Adapter<HireableHunterAd
         public TextView rangedDefTextView;
         public TextView hpTextView;
 
-        private RadioButton selectRadioButton;
+        private final RadioButton selectRadioButton;
 
 
         public ViewHolder(@NonNull View itemView) {

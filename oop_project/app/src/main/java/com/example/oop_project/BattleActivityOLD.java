@@ -97,7 +97,7 @@ public class BattleActivityOLD extends AppCompatActivity {
         // Determine whether the attacker will use melee or ranged
         Random rand = new Random();
         boolean prefersMelee = attacker.isPreferedAttack();
-        boolean useMelee = (rand.nextFloat() < 0.6) ? prefersMelee : !prefersMelee; // 60% chance for preferred attack
+        boolean useMelee = (rand.nextFloat() < 0.6) == prefersMelee; // 60% chance for preferred attack
 
 
         int damage = 0;

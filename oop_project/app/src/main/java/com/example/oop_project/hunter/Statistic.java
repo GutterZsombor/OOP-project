@@ -6,8 +6,8 @@ import java.util.List;
 
 public class Statistic implements Serializable {
     // Fields
-    private List<String> wins;           // Stores names of hunters this one beat
-    private List<String> losts;          // Stores Names of hunters this one lost to
+    private final List<String> wins;           // Stores names of hunters this one beat
+    private final List<String> losts;          // Stores Names of hunters this one lost to
     private int numberOfTrainingSessions; // Count of training sessions
 
     // Constructor
@@ -30,9 +30,9 @@ public class Statistic implements Serializable {
     public void addWin(String nameOfLoser) {
         wins.add(nameOfLoser);
 
-        for (int i = 0; i < wins.size(); i++) {
+        /*for (int i = 0; i < wins.size(); i++) {
             System.out.println(wins.get(i));
-        }
+        }*/
     }
 
     public void addLost(String nameOfWinner) {

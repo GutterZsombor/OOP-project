@@ -11,7 +11,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.oop_project.hunter.BountyHunter;
 import com.example.oop_project.hunter.Statistic;
 import com.example.oop_project.util.BattleAttack;
@@ -31,7 +33,7 @@ public class BattleActivity extends AppCompatActivity implements NetworkManager.
     private boolean isMyTurn = false;
     private boolean isMultiplayer = false;
     private NetworkManager networkManager;
-    private Gson gson = new Gson();
+    private final Gson gson = new Gson();
 
     // UI Elements
     private ImageView hunterImage1, hunterImage2;
@@ -244,7 +246,7 @@ public class BattleActivity extends AppCompatActivity implements NetworkManager.
         // Calculate damage (same as before)
         Random rand = new Random();
         boolean prefersMelee = attacker.isPreferedAttack();
-        boolean useMelee = (rand.nextFloat() < 0.6) ? prefersMelee : !prefersMelee;
+        boolean useMelee = (rand.nextFloat() < 0.6) == prefersMelee;
         int damage = useMelee ? defender.meleDefense(attacker) : defender.rangedDefense(attacker);
         if (damage < 0) damage = 0;
 
