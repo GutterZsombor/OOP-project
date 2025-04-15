@@ -21,6 +21,8 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
     private NetworkManager networkManager;
     private Button hostBtn, joinBtn;
     private TextView connectionStatus;
+    private boolean hasSentHunter = false;
+    private boolean isAlreadyConnected = false;
     //private NetworkManager networkManagerApp;
 
     @Override
@@ -49,16 +51,26 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
         hunterImage.setImageResource(resId);
         hunterName.setText(selectedHunter.getName());
 
+
         // Setup network callbacks
         NetworkManager.BattleNetworkCallback callback = new NetworkManager.BattleNetworkCallback() {
             @Override
             public void onConnected() {
+                if (isAlreadyConnected) return; // Prevent action if already connected
+                isAlreadyConnected = true;
                 runOnUiThread(() -> {
                     connectionStatus.setText("Connected!");
-                    if (!networkManager.isHost()) {
+                    if (!networkManager.isHost()&& !hasSentHunter) {
                         // Only client sends hunter immediately
-                        networkManager.sendHunter(selectedHunter);
                         Log.d("Network", "Client sent hunter: " + selectedHunter.getName());
+                        networkManager.sendHunter(selectedHunter);
+                        hasSentHunter = true; // Make sure to send the hunter here
+                    }
+                    if (networkManager.isHost()&& !hasSentHunter) {
+                        // Only client sends hunter immediately
+                        Log.d("Network", "Client sent hunter: " + selectedHunter.getName());
+                        networkManager.sendHunter(selectedHunter);
+                        hasSentHunter = true; // Make sure to send the hunter here
                     }
                 });
             }
@@ -69,7 +81,6 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
                     connectionStatus.setText("Disconnected");
                     Toast.makeText(MultiplayerSetupActivity.this,
                             "Connection lost Multiplayer Setup Act", Toast.LENGTH_SHORT).show();
-
                     Log.d("MultiPlayerSetup", "Connection lost Multiplayer Setup Act");
                 });
             }
@@ -77,6 +88,14 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
             @Override
             public void onMessageReceived(String message) {
                 // Handled by hunterReceivedListener instead
+            }
+
+            @Override
+            public void onConnectionStateChanged(NetworkManager.ConnectionState state) {
+                if (state == NetworkManager.ConnectionState.CONNECTED && !networkManager.isHost()) {
+                    // When connected and it’s not a host, send the hunter
+                    networkManager.sendHunter(selectedHunter);
+                }
             }
         };
 
@@ -94,7 +113,7 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
             hostBtn.setEnabled(false);
             joinBtn.setEnabled(false);
             startBattle(true);
-            /*networkManager.setHunterReceivedListener(enemyHunter -> {
+            networkManager.setHunterReceivedListener(enemyHunter -> {
                 // This will be called when client sends their hunter
                 handleReceivedHunter(enemyHunter);
             });
@@ -104,7 +123,7 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
                 if (networkManager.isConnected()) {
                     networkManager.sendHunter(selectedHunter);
                 }
-            }, 1000);*/
+            },10);
             System.out.println("Host End");
         });
 
@@ -114,6 +133,10 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
             hostBtn.setEnabled(false);
             joinBtn.setEnabled(false);
             startBattle(false);
+            networkManager.setHunterReceivedListener(enemyHunter -> {
+                // This will be called when host sends their hunter
+                handleReceivedHunter(enemyHunter);
+            });
             System.out.println("Client End");
         });
     }

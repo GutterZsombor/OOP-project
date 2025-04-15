@@ -126,6 +126,41 @@ public class BattleActivity extends AppCompatActivity implements NetworkManager.
                 finish();
                 return;
             }*/
+
+
+            networkManager.updateCallback(new NetworkManager.BattleNetworkCallback() {
+                @Override
+                public void onConnected() {
+                    runOnUiThread(() -> {
+                        Toast.makeText(BattleActivity.this, "Connected to opponent!", Toast.LENGTH_SHORT).show();
+                        // Initiate your game here if needed.
+                    });
+                }
+
+                @Override
+                public void onDisconnected() {
+                    runOnUiThread(() -> {
+                        Toast.makeText(BattleActivity.this, "Disconnected from opponent", Toast.LENGTH_SHORT).show();
+                        finish();
+                    });
+                }
+
+                @Override
+                public void onMessageReceived(String message) {
+                    // Handle incoming battle messages here
+                    Log.d(TAG, "Message received from opponent: " + message);
+                    // Process the message here
+                }
+
+                @Override
+                public void onConnectionStateChanged(NetworkManager.ConnectionState state) {
+                    if (state == NetworkManager.ConnectionState.DISCONNECTED) {
+                        Toast.makeText(BattleActivity.this, "Connection lost", Toast.LENGTH_SHORT).show();
+                        //finish(); // Finish the activity as the connection is lost.
+                    }
+                }
+            });
+
             if (networkManager == null || !networkManager.isConnected()) {
                 Log.d(TAG, "Connection check failed - Manager: " + networkManager +
                         ", Connected: " + (networkManager != null && networkManager.isConnected()));
@@ -133,68 +168,6 @@ public class BattleActivity extends AppCompatActivity implements NetworkManager.
                 finish();
                 return;
             }
-
-            networkManager.updateCallback(new NetworkManager.BattleNetworkCallback() {
-                @Override
-                public void onConnected() {
-                    runOnUiThread(() -> {
-                        Toast.makeText(BattleActivity.this,
-                                "Connected to opponent!", Toast.LENGTH_SHORT).show();
-                    });
-                }
-
-                @Override
-                public void onDisconnected() {
-                    runOnUiThread(() -> {
-                        Toast.makeText(BattleActivity.this,
-                                "Disconnected from opponent", Toast.LENGTH_SHORT).show();
-                        finish();
-                    });
-                }
-
-                @Override
-                public void onMessageReceived(String message) {
-                    // Handle incoming battle messages
-                    onMessageReceived(message);
-                    /*runOnUiThread(() -> {
-                        // Handle battle messages here
-                        BountyHunter hunter = BountyHunter.fromJson(message);
-                        // Update UI with received hunter data
-                    });*/
-                }
-
-                @Override
-                public void onConnectionStateChanged(NetworkManager.ConnectionState state) {
-                    /*runOnUiThread(() -> {
-                        NetworkManager.ConnectionState statet=networkManager.getConnectionState();
-                        switch (statet) {
-                            case CONNECTED:
-                                //connectionStatus.setText("Connected!");
-                                break;
-                            case DISCONNECTED:
-                                //connectionStatus.setText("Disconnected");
-                                Toast.makeText(BattleActivity.this,
-                                        "Connection lost", Toast.LENGTH_SHORT).show();
-                                finish();
-                                break;
-                            case ERROR:
-                                Toast.makeText(BattleActivity.this,
-                                        "Connection error", Toast.LENGTH_SHORT).show();
-                                break;
-                        }*/
-                    /*runOnUiThread(() -> {
-                        NetworkManager.ConnectionState statet=networkManager.getConnectionState();
-                        Toast.makeText(BattleActivity.this,
-                                "line 187"+statet, Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "line 188"+statet);
-
-                    });*/
-                    NetworkManager.ConnectionState statet=networkManager.getConnectionState();
-                    Toast.makeText(BattleActivity.this,
-                            "line 187"+statet, Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "line 188"+statet);
-                }
-            });
 
             boolean isHost = intent.getBooleanExtra("isHost", false);
 
