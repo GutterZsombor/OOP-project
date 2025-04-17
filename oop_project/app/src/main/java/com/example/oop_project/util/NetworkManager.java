@@ -51,9 +51,7 @@ public class NetworkManager {
     public void setHunterReceivedListener(HunterReceivedListener listener) {
         this.hunterReceivedListener = listener;
     }
-   /* public void setHunterReceivedListener(OnHunterReceivedListener listener) {
-        this.hunterListener = listener;
-    }*/
+
 
 
     public interface BattleNetworkCallback {
@@ -196,25 +194,7 @@ public class NetworkManager {
 
     public void initializeServer() {
         isHost = true;
-        //setState(ConnectionState.CONNECTING);
-        //setDisconnected();
-        /*try {
-            serverSocket = new ServerSocket(0);
-            setState(ConnectionState.CONNECTED);
-        } catch (IOException e) {
-            setState(ConnectionState.ERROR);
-        }*/
-        /*
-        try {
-            serverSocket = new ServerSocket(0); // Let system choose port and IP
-            serverSocket.setReuseAddress(true);
-            localPort = serverSocket.getLocalPort();
-            Log.d(TAG, "Server started on port: " + localPort);
-            registerService();
-            new Thread(this::acceptConnections).start();
-        } catch (IOException e) {
-            Log.e(TAG, "Server socket error: ", e);
-        }*/
+
         try {
             serverSocket = new ServerSocket(0);
             int port = serverSocket.getLocalPort(); // Get the actual port

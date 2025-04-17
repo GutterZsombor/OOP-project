@@ -25,7 +25,9 @@ import com.google.gson.Gson;
 import java.util.List;
 import java.util.Random;
 
-public class BattleActivity extends AppCompatActivity implements NetworkManager.BattleNetworkCallback {
+
+//implements NetworkManager.BattleNetworkCallback
+public class BattleActivity extends AppCompatActivity  {
     private static final String TAG = "BattleActivity";
 
     private BountyHunter myHunter;
@@ -46,37 +48,7 @@ public class BattleActivity extends AppCompatActivity implements NetworkManager.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_battle);
-        /*networkManager = ((App)getApplication()).getNetworkManager(this);
 
-        if (!networkManager.isConnected()) {
-            Toast.makeText(this, "Connection lost", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-
-        networkManager.updateCallback(new NetworkManager.BattleNetworkCallback() {
-            @Override
-            public void onConnected() {
-                runOnUiThread(() -> {
-                    Toast.makeText(BattleActivity.this,
-                            "Connected to opponent!", Toast.LENGTH_SHORT).show();
-            @Override
-            public void onConnectionStateChanged(NetworkManager.ConnectionState state) {
-                        runOnUiThread(() -> {
-                            switch (state) {
-                                case CONNECTED:
-                                    connectionStatus.setText("Connected!");
-                                    break;
-                                case DISCONNECTED:
-                                    connectionStatus.setText("Disconnected");
-                                    break;
-                                case ERROR:
-                                    Toast.makeText(activity, "Connection error", Toast.LENGTH_SHORT).show();
-                                    break;
-                            }});
-
-
-            }
-        });*/
 
         // Initialize UI
         initViews();
@@ -91,10 +63,13 @@ public class BattleActivity extends AppCompatActivity implements NetworkManager.
 
 
         myHunter = (BountyHunter) intent.getSerializableExtra("myHunter");
+
+        enemyHunter = (BountyHunter) intent.getSerializableExtra("enemyHunter");
         isMultiplayer = intent.getBooleanExtra("isMultiplayer", false);
 
         Log.d(TAG, "isMultiplayer: " + isMultiplayer);
         Log.d(TAG, "myHunter: " + myHunter.getName());
+        Log.d(TAG, "enemyHunter: " + enemyHunter.getName());
 
         if (isMultiplayer) {
             battleTitle.setText("BATTLE ONLINE");
@@ -110,14 +85,14 @@ public class BattleActivity extends AppCompatActivity implements NetworkManager.
                 public void onDisconnected() {
                     runOnUiThread(() -> {
                         Toast.makeText(BattleActivity.this, "Disconnected", Toast.LENGTH_SHORT).show();
-                        finish();
+                        //finish();
                     });
                 }
 
                 @Override
                 public void onMessageReceived(String message) {
                     // Handle battle messages
-                    onMessageReceived(message);
+                    onMessageReceivedBattleAct(message);
                 }
             });
 
@@ -130,7 +105,7 @@ public class BattleActivity extends AppCompatActivity implements NetworkManager.
             }*/
 
 
-            networkManager.updateCallback(new NetworkManager.BattleNetworkCallback() {
+            /*networkManager.updateCallback(new NetworkManager.BattleNetworkCallback() {
                 @Override
                 public void onConnected() {
                     runOnUiThread(() -> {
@@ -161,31 +136,32 @@ public class BattleActivity extends AppCompatActivity implements NetworkManager.
                         //finish(); // Finish the activity as the connection is lost.
                     }
                 }
-            });
+            });*/
 
             if (networkManager == null || !networkManager.isConnected()) {
                 Log.d(TAG, "Connection check failed - Manager: " + networkManager +
                         ", Connected: " + (networkManager != null && networkManager.isConnected()));
                 Toast.makeText(this, "Connection lost", Toast.LENGTH_SHORT).show();
-                finish();
-                return;
+                //finish();
+                //return;
             }
+
 
             boolean isHost = intent.getBooleanExtra("isHost", false);
 
             if (isHost) {
-                networkManager.initializeServer();
+                //networkManager.initializeServer();
                 isMyTurn = true; // Host goes first
             } else {
-                networkManager.discoverAndConnect();
+                //networkManager.discoverAndConnect();
                 isMyTurn = false; // Client waits
             }
 
-            // Get enemy hunter from intent
-            enemyHunter = (BountyHunter) intent.getSerializableExtra("enemyHunter");
+            //enemyHunter = (BountyHunter) intent.getSerializableExtra("enemyHunter");
+
         } else {
             // Local battle
-            enemyHunter = (BountyHunter) intent.getSerializableExtra("enemyHunter");
+            //enemyHunter = (BountyHunter) intent.getSerializableExtra("enemyHunter");
             isMyTurn = true; // Always player's turn in local battle
         }
 
@@ -243,14 +219,14 @@ public class BattleActivity extends AppCompatActivity implements NetworkManager.
         BountyHunter attacker = isMultiplayer ? myHunter : (isMyTurn ? myHunter : enemyHunter);
         BountyHunter defender = isMultiplayer ? enemyHunter : (isMyTurn ? enemyHunter : myHunter);
 
-        // Calculate damage (same as before)
+
         Random rand = new Random();
         boolean prefersMelee = attacker.isPreferedAttack();
         boolean useMelee = (rand.nextFloat() < 0.6) == prefersMelee;
         int damage = useMelee ? defender.meleDefense(attacker) : defender.rangedDefense(attacker);
         if (damage < 0) damage = 0;
 
-        // Apply tempo if damage is greater than 12
+
         int tempoDamage = 0;
         if (damage > 12) {
             tempoDamage = (int) Math.ceil(damage * 0.30);
@@ -261,11 +237,11 @@ public class BattleActivity extends AppCompatActivity implements NetworkManager.
             damage += tempoDamage;
         }
 
-        // Update defender's health
+
         int newHP = Math.max(0, defender.getHealth() - damage);
         defender.setHealth(newHP);
 
-        // Create battle log
+
         String attackType = useMelee ? "melee" : "ranged";
         String log = attacker.getName() + " attacks " + defender.getName() +
                 " with " + attackType + " for " + damage + " total damage.\n" +
@@ -339,7 +315,7 @@ public class BattleActivity extends AppCompatActivity implements NetworkManager.
     }
 
     // Network callbacks
-    @Override
+    /*@Override
     public void onConnected() {
         runOnUiThread(() -> {
             Toast.makeText(this, "Connected to opponent!", Toast.LENGTH_SHORT).show();
@@ -351,12 +327,12 @@ public class BattleActivity extends AppCompatActivity implements NetworkManager.
     public void onDisconnected() {
         runOnUiThread(() -> {
             Toast.makeText(this, "Disconnected from opponent", Toast.LENGTH_SHORT).show();
-            finish();
+            //finish();
         });
     }
-
-    @Override
-    public void onMessageReceived(String message) {
+*/
+    //@Override
+    public void onMessageReceivedBattleAct(String message) {
         try {
             // Determine message type
             if (message.contains("\"isBattleOver\":true")) {

@@ -4,16 +4,18 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="#FFFFFF"
+    android:background="#F5F5F5"
     android:padding="16dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hire Bounty Hunter"
-        android:textSize="22sp"
-        android:textColor="#800080"
-        android:layout_gravity="center" />
+
+        android:layout_gravity="center"
+        android:textColor="#000000"
+        android:textSize="28sp"
+        android:textStyle="bold"/>
 
     <RadioGroup
         android:id="@+id/radioGroupColors"
@@ -35,7 +37,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Hire"
-        android:background="#800080"
+        android:backgroundTint="#424242"
         android:textColor="#FFFFFF"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:padding="12dp"
+        android:color="#424242"/>
 </LinearLayout>

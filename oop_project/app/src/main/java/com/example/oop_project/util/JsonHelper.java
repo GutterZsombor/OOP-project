@@ -27,35 +27,10 @@ import java.util.List;
 
 public class JsonHelper {
 
-    // Both Gson and JSONObject is used for parsing JSON.
+
     private static final String TAG = "JsonHelper";
 
-    /*public static List<BountyHunter> loadBountyHunters(Context context, String fileName) {
-        List<BountyHunter> bountyHunters = new ArrayList<>();
-        try {
-            InputStream inputStream = context.getAssets().open(fileName);
-            InputStreamReader reader = new InputStreamReader(inputStream);
-
-            Gson gson = new Gson();
-            Type listType = new TypeToken<List<BountyHunter>>() {
-            }.getType();
-            bountyHunters = gson.fromJson(reader, listType);
-
-            reader.close();
-            inputStream.close();
-
-            if (bountyHunters == null) {
-                Log.w(TAG, "Parsed JSON resulted in a null list. Check JSON format.");
-                return new ArrayList<>(); // Return an empty list instead of null
-            }
-
-        } catch (IOException e) {
-            Log.e(TAG, "Error loading or parsing JSON from " + fileName + ": " + e.getMessage(), e);
-            // Consider showing a user-friendly error message here in a real app
-            return new ArrayList<>(); // Return an empty list to avoid NullPointerExceptions
-        }
-        return bountyHunters;
-    }*/
+    //newer functions
     public static JSONObject loadJson(Context context, String fileName) {
         try {
             FileInputStream fis = context.openFileInput(fileName);
@@ -183,7 +158,6 @@ public class JsonHelper {
                 }
             }
 
-
             JSONObject hunterObj = new JSONObject();
             hunterObj.put("name", name);
             hunterObj.put("numberOfTrainingSessions", stat.getNumberOfTrainingSessions());
@@ -209,41 +183,18 @@ public class JsonHelper {
         }
     }
 
-    /*public static List<BountyHunter> loadBountyHunters(Context context, String fileName) {
-        List<BountyHunter> bountyHunters = new ArrayList<>();
-        try {
-            File file = new File(context.getFilesDir(), fileName);
-            FileReader reader = new FileReader(file);
 
-            Gson gson = new Gson();
-            Type listType = new TypeToken<List<BountyHunter>>() {}.getType();
-            bountyHunters = gson.fromJson(reader, listType);
-
-            reader.close();
-
-            if (bountyHunters == null) {
-                Log.w(TAG, "Parsed JSON resulted in a null list. Check JSON format.");
-                return new ArrayList<>();
-            }
-
-        } catch (IOException e) {
-            Log.e(TAG, "Error loading or parsing JSON from " + fileName + ": " + e.getMessage(), e);
-            return new ArrayList<>();
-        }
-        return bountyHunters;
-    }
-*/
-
+    //early functions
     public static List<BountyHunter> loadBountyHunters(Context context, String fileName) {
         List<BountyHunter> bountyHunters = new ArrayList<>();
         try {
-            // Read the file content
+
             FileInputStream fis = context.openFileInput(fileName);
             byte[] data = new byte[fis.available()];
             fis.read(data);
             fis.close();
 
-            // Parse directly as JSONArray
+
             JSONArray huntersArray = new JSONArray(new String(data));
 
             for (int i = 0; i < huntersArray.length(); i++) {
@@ -270,29 +221,7 @@ public class JsonHelper {
     }
 
 
-   /* public static boolean saveBountyHunters(Context context, List<BountyHunter> bountyHunters, String fileName) {
-        File file = new File(context.getFilesDir(), fileName); // Get the file object
-        String absolutePath = file.getAbsolutePath();  // Get the absolute path
 
-        try {
-            Gson gson = new Gson();
-            String jsonString = gson.toJson(bountyHunters);
-
-            Log.d("JsonHelper", "Attempting to save to: " + absolutePath); // Log before writing
-            Log.d("JsonHelper", "JSON data: " + jsonString); // Log the JSON being written
-
-            FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write(jsonString);
-            fileWriter.close();
-
-            Log.d("JsonHelper", "Successfully saved data to: " + absolutePath);
-            return true;
-
-        } catch (IOException e) {
-            Log.e("JsonHelper", "Error saving to " + absolutePath + ": " + e.getMessage(), e); // Use absolutePath
-            return false;
-        }
-    }*/
 
     public static boolean saveBountyHunters(Context context, List<BountyHunter> bountyHunters, String fileName) {
         try {
@@ -313,7 +242,6 @@ public class JsonHelper {
                 huntersArray.put(hunterJson);
             }
 
-            // Save the JSONArray directly
             FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             OutputStreamWriter writer = new OutputStreamWriter(fos);
             writer.write(huntersArray.toString());
@@ -338,7 +266,7 @@ public class JsonHelper {
                 while ((length = inputStream.read(buffer)) > 0) {
                     outputStream.write(buffer, 0, length);
                 }
-                Log.d(TAG, "Copied " + fileName + " to internal storage.");
+
             } catch (IOException e) {
                 Log.e(TAG, "Failed to copy " + fileName + ": " + e.getMessage(), e);
             }
@@ -371,7 +299,7 @@ public class JsonHelper {
                 while ((length = inputStream.read(buffer)) > 0) {
                     outputStream.write(buffer, 0, length);
                 }
-                Log.d(TAG, "Copied " + fileName + " to internal storage.");
+
             } catch (IOException e) {
                 Log.e(TAG, "Failed to copy " + fileName + ": " + e.getMessage(), e);
             }
@@ -385,7 +313,7 @@ public class JsonHelper {
                 return hunter;
             }
         }
-        return null; // Return null if not found
+        return null;
     }
 
 

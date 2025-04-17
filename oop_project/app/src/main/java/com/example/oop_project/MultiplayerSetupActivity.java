@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.oop_project.hunter.BountyHunter;
 import com.example.oop_project.util.NetworkManager;
 
+import java.lang.Thread;
+
 public class MultiplayerSetupActivity extends AppCompatActivity {
     private BountyHunter selectedHunter;
     private ImageView hunterImage;
@@ -23,6 +25,7 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
     private TextView connectionStatus;
     private boolean hasSentHunter = false;
     private boolean isAlreadyConnected = false;
+    boolean recived=false;
     //private NetworkManager networkManagerApp;
 
     @Override
@@ -107,6 +110,7 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
             handleReceivedHunter(hunter);
         });
         // Button click listeners
+
         hostBtn.setOnClickListener(v -> {
             System.out.println("Host begin");
             connectionStatus.setText("Hosting battle...");
@@ -115,15 +119,20 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
             startBattle(true);
             networkManager.setHunterReceivedListener(enemyHunter -> {
                 // This will be called when client sends their hunter
-                handleReceivedHunter(enemyHunter);
+                if (recived==false){
+                    handleReceivedHunter(enemyHunter);
+                    recived=true;}
             });
 
             // Send our hunter to client
-            new Handler().postDelayed(() -> {
+           /* new Handler().postDelayed(() -> {
                 if (networkManager.isConnected()) {
                     networkManager.sendHunter(selectedHunter);
                 }
-            },10);
+            },10);*/
+            if (networkManager.isConnected()) {
+                networkManager.sendHunter(selectedHunter);
+            }
             System.out.println("Host End");
         });
 
@@ -133,10 +142,19 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
             hostBtn.setEnabled(false);
             joinBtn.setEnabled(false);
             startBattle(false);
+            //Thread.sleep(1000);
+
             networkManager.setHunterReceivedListener(enemyHunter -> {
-                // This will be called when host sends their hunter
+                if (recived==false){
                 handleReceivedHunter(enemyHunter);
+                recived=true;}
+
             });
+            if (networkManager.isConnected()) {
+                networkManager.sendHunter(selectedHunter);}
+
+            //handleReceivedHunter(enemyHunter);
+
             System.out.println("Client End");
         });
     }
@@ -150,7 +168,7 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
     }
 
     private void handleReceivedHunter(BountyHunter enemyHunter) {
-        runOnUiThread(() -> {
+        //runOnUiThread(() -> {
             Log.d("MultiPlayerSetup", "Received enemy hunter: " + enemyHunter.getName());
             ((App)getApplication()).setNetworkManager(networkManager);
             Intent intent = new Intent(MultiplayerSetupActivity.this, BattleActivity.class);
@@ -159,18 +177,17 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
             intent.putExtra("isMultiplayer", true);
             intent.putExtra("isHost", networkManager.isHost());
             startActivity(intent);
-            Log.d("Network", "Intent Succses " + enemyHunter.getName());
-            finish();
-        });
+            Log.d("MultiplayerSetup", "Intent Succses " + enemyHunter.getName());
+            //finish();
+
+        //});
     }
 
-    @Override
+    /*@Override
     protected void onDestroy() {
         super.onDestroy();
         //Dont teardown here pass to Battle Activity
-        /*
-        if (networkManager != null) {
-            networkManager.tearDown();
-        }*/
-    }
+
+
+    }*/
 }

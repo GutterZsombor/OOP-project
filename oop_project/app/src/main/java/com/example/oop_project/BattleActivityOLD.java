@@ -22,12 +22,12 @@ public class BattleActivityOLD extends AppCompatActivity {
     private BountyHunter hunter1;
     private BountyHunter hunter2;
 
-    // UI Elements for hunter1 (left)
+    // UI Elements for hunter1 left
     private ImageView hunterImage1;
     private TextView hunterName1, hpText1;
     private ProgressBar hpBar1;
 
-    // UI Elements for hunter2 (right)
+    // UI Elements for hunter2 right
     private ImageView hunterImage2;
     private TextView hunterName2, hpText2;
     private ProgressBar hpBar2;
@@ -48,13 +48,13 @@ public class BattleActivityOLD extends AppCompatActivity {
         hunter1 = (BountyHunter) getIntent().getSerializableExtra("hunter1");
         hunter2 = (BountyHunter) getIntent().getSerializableExtra("hunter2");
 
-        // Left card view (your hunter)
+        // Left my hunter
         hunterImage1 = findViewById(R.id.hunter_imagehome);
         hunterName1 = findViewById(R.id.hunter_namehome);
         hpText1 = findViewById(R.id.hpTexthome);
         hpBar1 = findViewById(R.id.hpBarhome);
 
-        // Right card view (enemy)
+        // Right enemy
         hunterImage2 = findViewById(R.id.hunter_imageenemy);
         hunterName2 = findViewById(R.id.hunter_nameenemy);
         hpText2 = findViewById(R.id.hpTextenemy);
@@ -81,7 +81,7 @@ public class BattleActivityOLD extends AppCompatActivity {
         hpBar.setProgress(hunter.getHealth());
 
 
-        //imageView.setImageResource(R.mipmap.boba);
+
         int resId = imageView.getContext().getResources().getIdentifier(
                 hunter.getImagePath(), "drawable", imageView.getContext().getPackageName());
 
@@ -97,7 +97,7 @@ public class BattleActivityOLD extends AppCompatActivity {
         // Determine whether the attacker will use melee or ranged
         Random rand = new Random();
         boolean prefersMelee = attacker.isPreferedAttack();
-        boolean useMelee = (rand.nextFloat() < 0.6) == prefersMelee; // 60% chance for preferred attack
+        boolean useMelee = (rand.nextFloat() < 0.6) == prefersMelee; // 60%
 
 
         int damage = 0;
@@ -109,7 +109,7 @@ public class BattleActivityOLD extends AppCompatActivity {
             damage = defender.rangedDefense(attacker);
         }
 
-        // Ensure damage is not negative
+
         if (damage < 0) damage = 0;
 
 
@@ -118,6 +118,10 @@ public class BattleActivityOLD extends AppCompatActivity {
         if (damage > 12) {
 
             tempoDamage = (int) Math.ceil(damage * 0.30);
+            damage += tempoDamage;
+        }
+        else if(damage >16 ){
+            tempoDamage = (int) Math.ceil(damage * 0.20);
             damage += tempoDamage;
         }
 
@@ -171,10 +175,10 @@ public class BattleActivityOLD extends AppCompatActivity {
         // Increase XP by 3
         winner.setExperience(winner.getExperience() + 3);
 
-        // Log the reward
+
         battleLog.append(winner.getName() + " wins! Stats increased\n\n");
 
-        // Save the updated hunter using the current context and file name
+
         JsonHelper.saveUpdatedHunter(this, winner, fileName);
 
         Statistic winnerStat = JsonHelper.loadHunterStatistic(this, winner.getName(),"Statistics.json");
@@ -189,7 +193,6 @@ public class BattleActivityOLD extends AppCompatActivity {
     }
 
     public static void punishLoser(Context context, BountyHunter loser,BountyHunter winner) {
-        // Load all hired bounty hunters from my_bounty_hunters.json
         List<BountyHunter> allHiredHunters = JsonHelper.loadBountyHunters(context, "my_bounty_hunters.json");
         List<BountyHunter> allNotHiredHunters = JsonHelper.loadBountyHunters(context, "not_hired_bounty_hunters.json");
 

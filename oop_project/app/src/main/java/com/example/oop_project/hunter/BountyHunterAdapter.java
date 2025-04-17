@@ -31,7 +31,7 @@ public class BountyHunterAdapter extends RecyclerView.Adapter<BountyHunterAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d("BountyHunterAdapter", "onCreateViewHolder called.");
+
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.bhuntercardview, parent, false);
         return new ViewHolder(itemView);
@@ -49,12 +49,7 @@ public class BountyHunterAdapter extends RecyclerView.Adapter<BountyHunterAdapte
 
 
             holder.imageView.setImageResource(resId); // Placeholder image
-            // Load image with Glide (ensure placeholder and error handling are in place)
-            //Glide.with(context)
-                    //.load(currentHunter.getImagePath()) // Replace with actual method if different
-                    //.placeholder(R.drawable.ic_launcher_foreground) // Replace with your placeholder
-                    //.error(R.drawable.ic_launcher_foreground)       // Replace with your error image
-                    //.into(holder.imageView);
+
 
             holder.meleeAtkTextView.setText(String.valueOf(currentHunter.getMeleAttack()));
             holder.meleeDefTextView.setText(String.valueOf(currentHunter.getMeleDefense()));
@@ -66,12 +61,6 @@ public class BountyHunterAdapter extends RecyclerView.Adapter<BountyHunterAdapte
 
             holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
-                    // Unselect all other checkboxes
-                    //for (BountyHunter otherHunter : bountyHunters) {
-                        //if (otherHunter != currentHunter) {
-                           // otherHunter.setSelected(false);
-                        //}
-                   // }
                     currentHunter.setSelected(true);
                     notifyDataSetChanged();
                 } else {

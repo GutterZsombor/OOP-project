@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.oop_project.hunter.BountyHunter;
 import com.example.oop_project.hunter.BountyHunterAdapter;
@@ -21,8 +22,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private Button btnViewHome;
     private Button btnViewStatistics;
-    private Button btnViewBattle;
+
     private Button btnHireHunter;
+    private TextView atHomeText;
+    private int numofHired = 0;
 
 
 
@@ -33,11 +36,12 @@ public class MainActivity extends AppCompatActivity {
 
         btnViewHome = findViewById(R.id.btnViewHome);
         btnViewStatistics = findViewById(R.id.btnViewStatistics);
-        btnViewBattle = findViewById(R.id.btnViewBattle);
+
         btnHireHunter = findViewById(R.id.btnHireHunter);
+        atHomeText = findViewById(R.id.TextHunters);
 
 
-        // Set click listener for View Home button
+
         btnViewHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
         JsonHelper.copyJsonIfNotExists(this ,"Statisticsexample.json");
         JsonHelper.copyJsonIfNotExists(this ,"Statistics.json");
 
+        numofHired = JsonHelper.loadBountyHunters(this, "my_bounty_hunters.json").size();
+
+        atHomeText.setText("Hunters at Home: "+numofHired);
 
         // Disable other buttons for now
         btnViewStatistics.setOnClickListener(new View.OnClickListener() {
@@ -82,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        btnViewBattle.setEnabled(false);
 
-        Log.d(TAG, "Other buttons disabled.");
+
+
     }
 }

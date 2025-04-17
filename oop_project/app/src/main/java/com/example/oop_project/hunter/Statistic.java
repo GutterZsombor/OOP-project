@@ -5,28 +5,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Statistic implements Serializable {
-    // Fields
+
     private final List<String> wins;           // Stores names of hunters this one beat
     private final List<String> losts;          // Stores Names of hunters this one lost to
-    private int numberOfTrainingSessions; // Count of training sessions
+    private int numberOfTrainingSessions;
 
-    // Constructor
+
     public Statistic() {
         this.wins = new ArrayList<>();
         this.losts = new ArrayList<>();
         this.numberOfTrainingSessions = 0;
     }
 
-    // Methods to get the lists
+
     public List<String> getWins() {
-        return new ArrayList<>(wins); // Return copy to preserve encapsulation
+        return new ArrayList<>(wins);
     }
 
     public List<String> getLost() {
-        return new ArrayList<>(losts); // Return copy to preserve encapsulation
+        return new ArrayList<>(losts);
     }
 
-    // Methods to add wins/losses
+
     public void addWin(String nameOfLoser) {
         wins.add(nameOfLoser);
 

@@ -24,7 +24,7 @@ public class HireableHunterAdapter extends RecyclerView.Adapter<HireableHunterAd
     private final Context context;
     private final List<BountyHunter> hireableHunters;
     private int selectedPosition = RecyclerView.NO_POSITION;
-    private final OnHireClickListener listener; // Add a listener
+    private final OnHireClickListener listener;
 
     // Define the listener interface
     public interface OnHireClickListener {
@@ -48,7 +48,7 @@ public class HireableHunterAdapter extends RecyclerView.Adapter<HireableHunterAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BountyHunter hunter = hireableHunters.get(position);
-        holder.bind(hunter,position);
+        holder.bind(hunter,position); //unlike other 2 addapters passing values happens in bind()
     }
 
     public BountyHunter getSelectedHunter() {

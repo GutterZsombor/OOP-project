@@ -27,16 +27,12 @@ public class BountyHunterStatisticsAdapter extends RecyclerView.Adapter<BountyHu
     private final Context context;
     private final List<BountyHunter> bountyHunters;
 
-    private int[] globalStats;
+    //almost 1 to 1 normal bounty hunter adapter except fro statistic values
 
     private static final String TAG = "BountyHunterStatisticsAdapter";
     public BountyHunterStatisticsAdapter(Context context, List<BountyHunter> bountyHunters) {
         this.context = context;
         this.bountyHunters = bountyHunters;
-        Log.w(TAG, "here");
-        //globalStats=JsonHelper.loadGlobalStats(context,"Statistic.json") ;
-        //loadStats();
-
 
         Log.d(TAG, "Adapter created. Initial item count: " + getItemCount()); // Log in constructor
     }
@@ -46,7 +42,7 @@ public class BountyHunterStatisticsAdapter extends RecyclerView.Adapter<BountyHu
     @NonNull
     @Override
     public BountyHunterStatisticsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder called.");
+        Log.d(TAG, "created");
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.bhunterstatisticscardview, parent, false);
         return new BountyHunterStatisticsAdapter.ViewHolder(itemView);
@@ -55,7 +51,7 @@ public class BountyHunterStatisticsAdapter extends RecyclerView.Adapter<BountyHu
     @Override
     public void onBindViewHolder(@NonNull BountyHunterStatisticsAdapter.ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder called for position: " + position);
-        if (position >= 0 && position < bountyHunters.size()) {  // Check for valid position
+        if (position >= 0 && position < bountyHunters.size()) {
             BountyHunter currentHunter = bountyHunters.get(position);
             holder.nameTextView.setText(currentHunter.getName());
 
@@ -64,12 +60,7 @@ public class BountyHunterStatisticsAdapter extends RecyclerView.Adapter<BountyHu
 
 
             holder.imageView.setImageResource(resId); // Placeholder image
-            // Load image with Glide (ensure placeholder and error handling are in place)
-            //Glide.with(context)
-            //.load(currentHunter.getImagePath()) // Replace with actual method if different
-            //.placeholder(R.drawable.ic_launcher_foreground) // Replace with your placeholder
-            //.error(R.drawable.ic_launcher_foreground)       // Replace with your error image
-            //.into(holder.imageView);
+
             holder.textBattles.setText(String.valueOf(currentHunter.getStatistic().getNumberOfWins()+currentHunter.getStatistic().getNumberOfLosts()));
             holder.textwiinlo.setText(String.valueOf(currentHunter.getStatistic().getWinLossRatio()));
             holder.textTraining.setText(String.valueOf(currentHunter.getStatistic().getNumberOfTrainingSessions()));

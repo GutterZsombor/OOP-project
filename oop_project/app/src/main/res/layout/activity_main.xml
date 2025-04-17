@@ -4,117 +4,104 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#F5F5F5"
     android:orientation="vertical"
     android:padding="16dp">
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FF6969"
+        android:gravity="center"
+        android:paddingBottom="16dp"
         android:text="Bounty Hunters"
-        android:textColor="#F6F6F4"
-        android:textSize="24sp" />
+        android:textColor="#000000"
+        android:textSize="28sp"
+        android:textStyle="bold" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp">
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
 
             <TextView
-
-                android:id="@+id/textView5"
+                android:id="@+id/TextHunters"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
                 android:text="Hunters at Home"
                 android:textColor="#000000"
-                android:textSize="24sp" />
+                android:textSize="20sp"
+                android:paddingBottom="8dp" />
 
             <Button
                 android:id="@+id/btnViewHome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
+                android:backgroundTint="#424242"
+                android:textColor="#FFFFFF"
                 android:text="View Home"
-                android:textColor="#800080" />
-        </LinearLayout>
-
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-        <TextView
-
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:text="Statistics"
-            android:textColor="#000000"
-            android:textSize="24sp" />
-        <Button
-            android:id="@+id/btnViewStatistics"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="#FFFFFF"
-            android:text="View Statistics"
-            android:textColor="#800080" />
+                android:padding="12dp"
+                android:color="#424242"
+                android:layout_marginTop="4dp"
+                />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
 
             <TextView
-
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                android:text="Battle Arena"
+                android:text="Statistics"
                 android:textColor="#000000"
-                android:textSize="24sp" />
+                android:textSize="20sp"
+                android:paddingBottom="8dp" />
 
-        <Button
-            android:id="@+id/btnViewBattle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="#FFFFFF"
-            android:text="View Battle Arena"
-            android:textColor="#800080" />
-</LinearLayout>
+            <Button
+                android:id="@+id/btnViewStatistics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#424242"
+                android:textColor="#FFFFFF"
+                android:text="View Statistics"
+                android:padding="12dp"
+                android:color="#424242" />
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
+
 
 
     <Button
         android:id="@+id/btnHireHunter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="#7AFF7A"
         android:text="Hire New Bounty Hunter"
-        android:textColor="#FFFFFF" />
-
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#424242"
+        android:padding="12dp"
+        android:color="#424242"
+        android:layout_marginTop="30dp"
+        />
 
 </LinearLayout>

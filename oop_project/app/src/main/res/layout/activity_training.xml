@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFFFFF"
+    android:background="#F5F5F5"
     android:padding="16dp">
 
     <!-- Title -->
@@ -83,8 +83,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Move to Home"
-        android:background="#800080"
         android:textColor="#FFFFFF"
+        android:backgroundTint="#424242"
+        android:padding="12dp"
+        android:color="#424242"
         android:layout_gravity="bottom"
          />
 
