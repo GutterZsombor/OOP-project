@@ -1,11 +1,9 @@
 // NetworkManager.java
 package com.example.oop_project.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -42,15 +40,27 @@ public class NetworkManager {
     private int localPort;
     private boolean isHost;
     private BattleNetworkCallback callback;
-    private OnHunterReceivedListener hunterListener;
+    //private OnHunterReceivedListener hunterListener;
+    private MessageReceivedListener messageListener;
     private HunterReceivedListener hunterReceivedListener;
     private final Handler mainHandler;
     public interface HunterReceivedListener {
         void onHunterReceived(BountyHunter hunter);
     }
+    public interface MessageReceivedListener {
+        void onMessageReceivedd(String message);
+    }
     public void setHunterReceivedListener(HunterReceivedListener listener) {
         this.hunterReceivedListener = listener;
     }
+    public void setMessageReceivedListener(MessageReceivedListener listener) {
+        this.messageListener = listener;
+    }
+
+
+    /*public interface OnHunterReceivedListener {
+        void onHunterReceived(BountyHunter hunter);
+    }*/
 
 
 
@@ -64,9 +74,6 @@ public class NetworkManager {
 
     }
 
-    public interface OnHunterReceivedListener {
-        void onHunterReceived(BountyHunter hunter);
-    }
 
     public NetworkManager(Context context, BattleNetworkCallback callback) {
         this.context = context;
@@ -115,7 +122,10 @@ public class NetworkManager {
                 ", ClientSocket: " + (clientSocket != null && clientSocket.isConnected()));
 
         if (!connected) {
-            setDisconnected("isConnected"); // state matches reality
+            //setDisconnected("isConnected");
+            // state matches reality
+            //setConnected();
+            Log.i(TAG, "Connection lost");
         }
         return connected;
     }
@@ -172,10 +182,24 @@ public class NetworkManager {
                         if (hunterReceivedListener != null) {
                             mainHandler.post(() ->
                                     hunterReceivedListener.onHunterReceived(hunter));
+                            Log.d(TAG, "Hunter received: " );
                         }
-                        continue;
+                        //continue;
                     } catch (Exception e) {
                         Log.d(TAG, "Message is not a hunter: " + e.getMessage());
+                    }
+                    try {
+                        BattleAttack attack = BattleAttack.fromJson(message);
+                        final String attackMessage=message;
+                        if (messageListener != null) {
+                            mainHandler.post(() ->
+                                    messageListener.onMessageReceivedd(attackMessage));
+                            Log.d(TAG, "Attack received: " );
+                        }
+                        //messageListener.onMessageReceivedd(message);
+                        //continue;
+                    } catch (Exception e) {
+                        Log.d(TAG, "Message is not a message: " + e.getMessage());
                     }
                     final String messageFinal = message;
                     if (callback != null) {
@@ -217,6 +241,7 @@ public class NetworkManager {
 
                 }
             }).start();
+            //acceptConnections();
 
         } catch (IOException e) {
             Log.e(TAG, "Server init failed: " + e.getMessage());
@@ -319,11 +344,14 @@ public class NetworkManager {
 
 
 
-    public void discoverAndConnect() {
+    public void discoverAndConnect(boolean lisenerexit) {
         setState(ConnectionState.CONNECTING);
         isHost = false;
-        initializeDiscoveryListener();
+        if(!lisenerexit){
+            initializeDiscoveryListener();
+        }
         nsdManager.discoverServices(SERVICE_TYPE, NsdManager.PROTOCOL_DNS_SD, discoveryListener);
+        //acceptConnections();
     }
 
     private void acceptConnections() {
@@ -383,12 +411,13 @@ public class NetworkManager {
 
                try {
                    BountyHunter hunter = BountyHunter.fromJson(line);
-                   if (hunterListener != null) {
-                       hunterListener.onHunterReceived(hunter);
+                   if (hunterReceivedListener != null) {
+                       hunterReceivedListener.onHunterReceived(hunter);
                    }
                } catch (Exception e) {
                    Log.e(TAG, "Error parsing hunter: " + e.getMessage());
                }
+
            }
        } catch (IOException e) {
            Log.e(TAG, "Error receiving messages: " + e.getMessage());
@@ -402,7 +431,7 @@ public class NetworkManager {
         sendMessage(json);
     }*/
     public void sendMessage(String message) {
-        if (clientSocket != null && clientSocket.isConnected()) {
+        /*if (clientSocket != null && clientSocket.isConnected()) {
             new Thread(() -> {
                 try {
                     clientSocket.getOutputStream().write(message.getBytes());
@@ -410,15 +439,32 @@ public class NetworkManager {
                     Log.e(TAG, "Error sending message: " + e.getMessage());
                 }
             }).start();
+        }*/
+        setState(ConnectionState.CONNECTED);
+        if (clientSocket == null ) {//|| !clientSocket.isConnected()
+            Log.e(TAG, "Cannot send message - socket not connected");
+            return;
         }
+
+
+        new Thread(() -> {
+            try {
+                PrintWriter out = new PrintWriter(
+                        new OutputStreamWriter(clientSocket.getOutputStream()), true);
+                out.println(message);
+                Log.d(TAG, "Message sent successfully");
+            } catch (IOException e) {
+                Log.e(TAG, "Error sending message: " + e.getMessage());
+            }
+        }).start();
     }
 
     public void sendHunter(BountyHunter hunter) {
         setState(ConnectionState.CONNECTED);
-        if (clientSocket == null || !clientSocket.isConnected()) {
+        /*if (clientSocket == null ) {//|| !clientSocket.isConnected()
             Log.e(TAG, "Cannot send hunter - socket not connected");
             return;
-        }
+        }*/
 
         new Thread(() -> {
             try {

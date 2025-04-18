@@ -95,16 +95,17 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
 
             @Override
             public void onConnectionStateChanged(NetworkManager.ConnectionState state) {
-                if (state == NetworkManager.ConnectionState.CONNECTED && !networkManager.isHost()) {
+                /*if (state == NetworkManager.ConnectionState.CONNECTED && !networkManager.isHost()) {
                     // When connected and it’s not a host, send the hunter
                     networkManager.sendHunter(selectedHunter);
-                }
+                }*/
             }
         };
 
         //networkManager = new NetworkManager(this, callback);
         //networkManager.setHunterReceivedListener(this::handleReceivedHunter);
         networkManager = new NetworkManager(this, callback);
+        ((App) getApplication()).setNetworkManager(networkManager);
         networkManager.setHunterReceivedListener(hunter -> {
             Log.d("Network", "Hunter received in listener: " + hunter.getName());
             handleReceivedHunter(hunter);
@@ -134,6 +135,7 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
                 networkManager.sendHunter(selectedHunter);
             }
             System.out.println("Host End");
+
         });
 
         joinBtn.setOnClickListener(v -> {
@@ -156,6 +158,7 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
             //handleReceivedHunter(enemyHunter);
 
             System.out.println("Client End");
+
         });
     }
 
@@ -163,14 +166,14 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
         if (isHost) {
             networkManager.initializeServer();
         } else {
-            networkManager.discoverAndConnect();
+            networkManager.discoverAndConnect(false);
         }
     }
 
     private void handleReceivedHunter(BountyHunter enemyHunter) {
         //runOnUiThread(() -> {
             Log.d("MultiPlayerSetup", "Received enemy hunter: " + enemyHunter.getName());
-            ((App)getApplication()).setNetworkManager(networkManager);
+            //((App)getApplication()).setNetworkManager(networkManager);
             Intent intent = new Intent(MultiplayerSetupActivity.this, BattleActivity.class);
             intent.putExtra("myHunter", selectedHunter);
             intent.putExtra("enemyHunter", enemyHunter);

@@ -1,5 +1,8 @@
 package com.example.oop_project.util;
 
+import com.example.oop_project.hunter.BountyHunter;
+import com.google.gson.Gson;
+
 public class BattleAttack {
     private String attackerName;
     private String defenderName;
@@ -73,5 +76,13 @@ public class BattleAttack {
 
     public void setBattleOver(boolean battleOver) {
         isBattleOver = battleOver;
+    }
+
+    public String toJson() {
+        return new Gson().toJson(this);
+    }
+
+    public static BattleAttack fromJson(String json) {
+        return new Gson().fromJson(json, BattleAttack.class);
     }
 }

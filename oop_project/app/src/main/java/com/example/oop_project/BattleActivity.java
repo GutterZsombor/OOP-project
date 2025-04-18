@@ -28,6 +28,7 @@ import java.util.Random;
 
 //implements NetworkManager.BattleNetworkCallback
 public class BattleActivity extends AppCompatActivity  {
+    //HAPPYYYYYY
     private static final String TAG = "BattleActivity";
 
     private BountyHunter myHunter;
@@ -71,30 +72,43 @@ public class BattleActivity extends AppCompatActivity  {
         Log.d(TAG, "myHunter: " + myHunter.getName());
         Log.d(TAG, "enemyHunter: " + enemyHunter.getName());
 
+
         if (isMultiplayer) {
             battleTitle.setText("BATTLE ONLINE");
             networkManager = ((App) getApplication()).getNetworkManager(this, new NetworkManager.BattleNetworkCallback() {
                 @Override
                 public void onConnected() {
-                    runOnUiThread(() -> {
+                    //runOnUiThread(() -> {
                         Toast.makeText(BattleActivity.this, "Connected!", Toast.LENGTH_SHORT).show();
-                    });
+                    //});
                 }
 
                 @Override
                 public void onDisconnected() {
-                    runOnUiThread(() -> {
+                    //runOnUiThread(() -> {
                         Toast.makeText(BattleActivity.this, "Disconnected", Toast.LENGTH_SHORT).show();
                         //finish();
-                    });
+                    //});
                 }
 
                 @Override
                 public void onMessageReceived(String message) {
                     // Handle battle messages
-                    onMessageReceivedBattleAct(message);
+                    //onMessageReceivedBattleAct(message);
                 }
             });
+            boolean isHost = intent.getBooleanExtra("isHost", false);
+
+            if (isHost) {
+                //networkManager.initializeServer();
+                //Log.i(TAG, "Host Init server");
+                isMyTurn = true; // Host goes first
+            } else {
+                //Log.i(TAG, "Client Discover connect");
+                //networkManager.discoverAndConnect(true);
+
+                isMyTurn = false; // Client waits
+            }
 
             //Connection lost
            /* if (!networkManager.isConnected()) {
@@ -146,16 +160,12 @@ public class BattleActivity extends AppCompatActivity  {
                 //return;
             }
 
+            networkManager.setMessageReceivedListener(message -> {
+                // This will be called when client sends their hunter
+                Log.i("BattleActivity", "Message Listener" + message);
+                onMessageReceivedBattleAct(message);
 
-            boolean isHost = intent.getBooleanExtra("isHost", false);
-
-            if (isHost) {
-                //networkManager.initializeServer();
-                isMyTurn = true; // Host goes first
-            } else {
-                //networkManager.discoverAndConnect();
-                isMyTurn = false; // Client waits
-            }
+            });
 
             //enemyHunter = (BountyHunter) intent.getSerializableExtra("enemyHunter");
 
@@ -287,8 +297,12 @@ public class BattleActivity extends AppCompatActivity  {
         } else {
             if (isMultiplayer) {
                 // Send attack data to opponent
+                Log.d(TAG, "Is Conected"+networkManager.isConnected());
+
+                Log.d(TAG, "Sending attack data to opponent");
                 BattleAttack attack = new BattleAttack(attacker.getName(), defender.getName(), damage, newHP, useMelee, tempoDamage,false);
                 networkManager.sendMessage(gson.toJson(attack));
+                System.out.println(gson.toJson(attack));
 
                 // Switch turns
                 isMyTurn = !isMyTurn;
@@ -308,10 +322,10 @@ public class BattleActivity extends AppCompatActivity  {
     }
 
     private void updateUI() {
-        runOnUiThread(() -> {
+        //runOnUiThread(() -> {
             nextAttackBtn.setEnabled(isMyTurn);
             nextAttackBtn.setText(isMyTurn ? "ATTACK" : "Waiting for opponent...");
-        });
+        //});
     }
 
     // Network callbacks
@@ -333,6 +347,7 @@ public class BattleActivity extends AppCompatActivity  {
 */
     //@Override
     public void onMessageReceivedBattleAct(String message) {
+        Log.d("onMessageReceivedBattleAct", message);
         try {
             // Determine message type
             if (message.contains("\"isBattleOver\":true")) {
@@ -348,7 +363,7 @@ public class BattleActivity extends AppCompatActivity  {
     }
 
     private void handleOpponentAttack(BattleAttack attack) {
-        runOnUiThread(() -> {
+        //runOnUiThread(() -> {
             // Update enemy hunter's health
             enemyHunter.setHealth(attack.getNewHP());
 
@@ -377,7 +392,7 @@ public class BattleActivity extends AppCompatActivity  {
                 isMyTurn = true;
                 updateUI();
             }
-        });
+        //});
     }
 
     private void handleBattleResult(BattleResult result) {
