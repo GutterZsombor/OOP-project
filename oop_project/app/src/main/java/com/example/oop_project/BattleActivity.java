@@ -1,8 +1,9 @@
-// BattleActivity.java
+
 package com.example.oop_project;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.example.oop_project.hunter.BountyHunter;
 import com.example.oop_project.hunter.Statistic;
@@ -43,6 +45,7 @@ public class BattleActivity extends AppCompatActivity  {
     private TextView hunterName1, hunterName2, hpText1, hpText2, battleLog,battleTitle;
     private ProgressBar hpBar1, hpBar2;
     private Button nextAttackBtn, endBattleBtn;
+    private CardView hunterCard1, hunterCard2;
     //private NetworkManager networkManagerApp;
 
     @Override
@@ -71,7 +74,8 @@ public class BattleActivity extends AppCompatActivity  {
         Log.d(TAG, "isMultiplayer: " + isMultiplayer);
         Log.d(TAG, "myHunter: " + myHunter.getName());
         Log.d(TAG, "enemyHunter: " + enemyHunter.getName());
-
+        hunterCard2.setCardBackgroundColor(Color.LTGRAY);
+        hunterCard1.setCardBackgroundColor(Color.WHITE);
 
         if (isMultiplayer) {
             battleTitle.setText("BATTLE ONLINE");
@@ -211,6 +215,8 @@ public class BattleActivity extends AppCompatActivity  {
         nextAttackBtn = findViewById(R.id.nextAttackBtn);
         endBattleBtn = findViewById(R.id.endBattleBtn);
         battleTitle=findViewById(R.id.battleTitle);
+        hunterCard1 = findViewById(R.id.hunter_card);
+        hunterCard2 = findViewById(R.id.hunter_cardenemy);
     }
 
     private void setupHunterUI(BountyHunter hunter, ImageView imageView, TextView nameView,
@@ -273,25 +279,33 @@ public class BattleActivity extends AppCompatActivity  {
             if (isMultiplayer) {
                 // Send battle result to opponent
                 BattleResult result = new BattleResult(
-                        attacker.getName(), defender.getName(), damage, newHP, true);
+                        defender.getName(), attacker.getName(), damage, newHP, true);
                 networkManager.sendMessage(gson.toJson(result));
 
                 // Handle rewards locally
+                // oponent moved to handle results
                 if (attacker == myHunter) {
                     rewardWinner(myHunter, enemyHunter);
-                    punishLoser(this, enemyHunter, myHunter);
+                    hunterCard1.setCardBackgroundColor(Color.GREEN);
+                    hunterCard2.setCardBackgroundColor(Color.RED);
                 } else {
-                    rewardWinner(enemyHunter, myHunter);
+
                     punishLoser(this, myHunter, enemyHunter);
+                    hunterCard2.setCardBackgroundColor(Color.GREEN);
+                    hunterCard1.setCardBackgroundColor(Color.RED);
                 }
             } else {
                 // Local battle handling
                 if (attacker == myHunter) {
                     rewardWinner(myHunter, enemyHunter);
                     punishLoser(this, enemyHunter, myHunter);
+                    hunterCard1.setCardBackgroundColor(Color.GREEN);
+                    hunterCard2.setCardBackgroundColor(Color.RED);
                 } else {
                     rewardWinner(enemyHunter, myHunter);
                     punishLoser(this, myHunter, enemyHunter);
+                    hunterCard2.setCardBackgroundColor(Color.GREEN);
+                    hunterCard1.setCardBackgroundColor(Color.RED);
                 }
             }
         } else {
@@ -307,11 +321,31 @@ public class BattleActivity extends AppCompatActivity  {
                 // Switch turns
                 isMyTurn = !isMyTurn;
                 updateUI();
+                if(!isMyTurn){
+                    hunterCard1.setCardBackgroundColor(Color.LTGRAY);
+                    hunterCard2.setCardBackgroundColor(Color.WHITE);
+
+                }
+                else{
+                    hunterCard1.setCardBackgroundColor(Color.WHITE);
+                    hunterCard2.setCardBackgroundColor(Color.LTGRAY);
+                }
             } else {
                 // Local battle - just switch turns
                 isMyTurn = !isMyTurn;
+                if(!isMyTurn){
+                    hunterCard1.setCardBackgroundColor(Color.LTGRAY);
+                    hunterCard2.setCardBackgroundColor(Color.WHITE);
+
+                }
+                else{
+                    hunterCard1.setCardBackgroundColor(Color.WHITE);
+                    hunterCard2.setCardBackgroundColor(Color.LTGRAY);
+                }
             }
         }
+
+
     }
 
     private void updateHPBars() {
@@ -365,7 +399,7 @@ public class BattleActivity extends AppCompatActivity  {
     private void handleOpponentAttack(BattleAttack attack) {
         //runOnUiThread(() -> {
             // Update enemy hunter's health
-            enemyHunter.setHealth(attack.getNewHP());
+            myHunter.setHealth(attack.getNewHP());
 
             // Add to battle log
             String attackType = attack.isMelee() ? "melee" : "ranged";
@@ -380,32 +414,41 @@ public class BattleActivity extends AppCompatActivity  {
 
             log += "\n";
             battleLog.append(log);
+
             updateHPBars();
 
             // Check if battle is over
-            if (attack.isBattleOver()) {
+            /*if (attack.isBattleOver()) {
                 battleLog.append(myHunter.getName() + " is defeated!\n");
                 nextAttackBtn.setEnabled(false);
                 punishLoser(this, myHunter, enemyHunter);
             } else {
                 // It's now my turn
-                isMyTurn = true;
-                updateUI();
-            }
+
+            }*/
+        isMyTurn = true;
+        updateUI();
         //});
     }
 
     private void handleBattleResult(BattleResult result) {
-        runOnUiThread(() -> {
+        //runOnUiThread(() -> {
+            battleLog.append(result.getLoserName() + " Lost the battle!\n");
             battleLog.append(result.getWinnerName() + " wins the battle!\n");
             nextAttackBtn.setEnabled(false);
+            myHunter.setHealth(0);
+            updateHPBars();
 
             if (result.getWinnerName().equals(myHunter.getName())) {
                 rewardWinner(myHunter, enemyHunter);
+                hunterCard1.setCardBackgroundColor(Color.GREEN);
+                hunterCard2.setCardBackgroundColor(Color.RED);
             } else {
                 punishLoser(this, myHunter, enemyHunter);
+                hunterCard2.setCardBackgroundColor(Color.GREEN);
+                hunterCard1.setCardBackgroundColor(Color.RED);
             }
-        });
+        //});
     }
 
     @Override
@@ -418,6 +461,7 @@ public class BattleActivity extends AppCompatActivity  {
             networkManager.tearDown();
         }*/
         super.onDestroy();
+        networkManager.tearDown();
     }
 
 

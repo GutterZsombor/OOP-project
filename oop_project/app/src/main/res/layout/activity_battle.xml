@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             xmlns:app="http://schemas.android.com/tools"
-
+            android:id="@+id/hunter_card"
             android:layout_margin="8dp"
             card_view:cardCornerRadius="12dp"
             card_view:cardElevation="6dp"
@@ -146,7 +146,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             xmlns:app="http://schemas.android.com/tools"
-
+            android:id="@+id/hunter_cardenemy"
             android:layout_margin="8dp"
             card_view:cardCornerRadius="12dp"
             card_view:cardElevation="6dp"
