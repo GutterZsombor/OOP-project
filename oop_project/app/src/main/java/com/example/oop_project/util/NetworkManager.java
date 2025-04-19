@@ -1,4 +1,3 @@
-// NetworkManager.java
 package com.example.oop_project.util;
 
 import android.content.Context;
@@ -40,7 +39,6 @@ public class NetworkManager {
     private int localPort;
     private boolean isHost;
     private BattleNetworkCallback callback;
-    //private OnHunterReceivedListener hunterListener;
     private MessageReceivedListener messageListener;
     private HunterReceivedListener hunterReceivedListener;
     private final Handler mainHandler;
@@ -56,11 +54,6 @@ public class NetworkManager {
     public void setMessageReceivedListener(MessageReceivedListener listener) {
         this.messageListener = listener;
     }
-
-
-    /*public interface OnHunterReceivedListener {
-        void onHunterReceived(BountyHunter hunter);
-    }*/
 
 
 
@@ -90,12 +83,12 @@ public class NetworkManager {
         DISCONNECTED,
         CONNECTING,
         CONNECTED,
-        ERROR
+
     }
 
     private ConnectionState state = ConnectionState.CONNECTED;
 
-    // Add these methods
+
     private synchronized void setConnected(Socket socket, ServerSocket serverSocket) {
         this.clientSocket = socket;
         this.serverSocket = serverSocket;
@@ -130,9 +123,6 @@ public class NetworkManager {
         return connected;
     }
 
-    public ConnectionState getConnectionState() {
-        return state;
-    }
 
     private void setState(ConnectionState newState) {
         this.state = newState;
@@ -145,29 +135,8 @@ public class NetworkManager {
         Log.d(TAG, "Connection state changed to: " + newState);
     }
 
-    /*private void startReceiveThread() {
-        new Thread(() -> {
-            try {
-                BufferedReader reader = new BufferedReader(
-                        new InputStreamReader(clientSocket.getInputStream()));
-                String message;
 
-                while ((message = reader.readLine()) != null) {
-                    Log.d(TAG, "Received message NetworkManager: " + message);
-                    if (callback != null) {
-                        callback.onMessageReceived(message);
-                    }
-                }
-            } catch (IOException e) {
-                Log.e(TAG, "Receive error: " + e.getMessage());
-                setDisconnected();
-                if (callback != null) {
-                    callback.onDisconnected();
-                }
-            }
-        }).start();
-    }*/
-    private void startReceiveThread() {
+    private void reciveHunterandMessage() {
         new Thread(() -> {
             try {
                 BufferedReader reader = new BufferedReader(
@@ -231,7 +200,7 @@ public class NetworkManager {
                 try {
                     clientSocket = serverSocket.accept();
                     setConnected(clientSocket, serverSocket);
-                    startReceiveThread(); // Now this will work
+                    reciveHunterandMessage(); // Now this will work
                     if (callback != null) {
                         callback.onConnected();
                     }
@@ -271,77 +240,6 @@ public class NetworkManager {
 
     }
 
-    /*public void initializeServer() {
-        isHost = true;
-        try {
-            // Try with SO_REUSEADDR and explicit timeout
-            //serverSocket = new ServerSocket(0, 50, InetAddress.getByName("0.0.0.0"));
-            serverSocket = new ServerSocket(0);
-            serverSocket.setReuseAddress(true);
-            serverSocket.setSoTimeout(10000); // 10 second timeout
-            localPort = serverSocket.getLocalPort();
-            Log.d(TAG, "Server started on port: " + localPort);
-            registerService();
-            new Thread(this::acceptConnections).start();
-        } catch (IOException e) {
-            Log.e(TAG, "Server socket error: ", e); // Full stack trace
-            // Fallback to hardcoded port if needed
-            try {
-                //if emulator needs it
-                serverSocket = new ServerSocket(8080, 50, InetAddress.getByName("10.0.2.15"));
-                localPort = 8888;
-                registerService();
-                new Thread(this::acceptConnections).start();
-            } catch (IOException ex) {
-                Log.e(TAG, "Fallback port failed: ", ex);
-            }
-        }
-    }*/
-/*
-    public void initializeServer() {
-        isHost = true;
-        try {
-            // Solution 1: Try with explicit local IP
-            InetAddress localIp = InetAddress.getByName("192.168.1.x"); // Replace with your local IP
-            serverSocket = new ServerSocket(0, 50, localIp);
-            serverSocket.setReuseAddress(true);
-            localPort = serverSocket.getLocalPort();
-            Log.d(TAG, "Server started on port: " + localPort);
-            registerService();
-            new Thread(this::acceptConnections).start();
-        } catch (Exception e) {
-            Log.e(TAG, "Primary method failed, trying fallback", e);
-
-            // Solution 2: Try on UI thread (for emulator workaround)
-            runOnUiThread(() -> {
-                try {
-                    serverSocket = new ServerSocket(8888);
-                    localPort = 8888;
-                    registerService();
-                    new Thread(this::acceptConnections).start();
-                } catch (IOException ex) {
-                    Log.e(TAG, "UI thread fallback failed", ex);
-
-                    // Solution 3: Last resort - use AsyncTask
-                    new AsyncTask<Void, Void, Void>() {
-                        protected Void doInBackground(Void... params) {
-                            try {
-                                serverSocket = new ServerSocket(8888);
-                                localPort = 8888;
-                                registerService();
-                                new Thread(NetworkManager.this::acceptConnections).start();
-                            } catch (IOException e) {
-                                Log.e(TAG, "AsyncTask fallback failed", e);
-                            }
-                            return null;
-                        }
-                    }.execute();
-                }
-            });
-        }
-    }
-*/
-
 
 
     public void discoverAndConnect(boolean lisenerexit) {
@@ -354,92 +252,10 @@ public class NetworkManager {
         //acceptConnections();
     }
 
-    private void acceptConnections() {
-        try {
-            clientSocket = serverSocket.accept();
-            callback.onConnected();
-            new Thread(this::receiveMessages).start();
-        } catch (IOException e) {
-            Log.e(TAG, "Error accepting connection: " + e.getMessage());
-        }
-    }
 
-   /*private void receiveMessages() {
-        try {
-            byte[] buffer = new byte[1024];
-            int bytes;
-            StringBuilder fullMessage = new StringBuilder();
 
-            while (clientSocket != null && clientSocket.isConnected()) {
-                bytes = clientSocket.getInputStream().read(buffer);
-                if (bytes > 0) {
-                    String message = new String(buffer, 0, bytes);
-                    fullMessage.append(message);
-
-                    // Optional: Check for end-of-message marker like newline or special character
-                    if (message.contains("}")) { // crude way to detect end of JSON
-                        String json = fullMessage.toString().trim();
-
-                        // Try parsing as BountyHunter
-                        try {
-                            BountyHunter received = BountyHunter.fromJson(json);
-                            if (hunterListener != null) {
-                                hunterListener.onHunterReceived(received);
-                            }
-                        } catch (Exception e) {
-                            Log.e(TAG, "Failed to parse BountyHunter: " + e.getMessage());
-                        }
-
-                        fullMessage.setLength(0); // clear buffer after processing
-                    }
-                }
-            }
-        } catch (IOException e) {
-            Log.e(TAG, "Error receiving message: " + e.getMessage());
-            callback.onDisconnected();
-        }
-    }*/
-   private void receiveMessages() {
-       try {
-           setState(ConnectionState.CONNECTED);
-           BufferedReader reader = new BufferedReader(
-                   new InputStreamReader(clientSocket.getInputStream()));
-           String line;
-
-           while ((line = reader.readLine()) != null) {
-               Log.d(TAG, "Received raw message: " + line);
-
-               try {
-                   BountyHunter hunter = BountyHunter.fromJson(line);
-                   if (hunterReceivedListener != null) {
-                       hunterReceivedListener.onHunterReceived(hunter);
-                   }
-               } catch (Exception e) {
-                   Log.e(TAG, "Error parsing hunter: " + e.getMessage());
-               }
-
-           }
-       } catch (IOException e) {
-           Log.e(TAG, "Error receiving messages: " + e.getMessage());
-           callback.onDisconnected();
-       }
-   }
-    /*public void sendHunter(BountyHunter hunter) {
-        Log.d(TAG, "Sending hunter JSON: " + hunter.toJson());
-
-        String json = hunter.toJson();
-        sendMessage(json);
-    }*/
     public void sendMessage(String message) {
-        /*if (clientSocket != null && clientSocket.isConnected()) {
-            new Thread(() -> {
-                try {
-                    clientSocket.getOutputStream().write(message.getBytes());
-                } catch (IOException e) {
-                    Log.e(TAG, "Error sending message: " + e.getMessage());
-                }
-            }).start();
-        }*/
+
         setState(ConnectionState.CONNECTED);
         if (clientSocket == null ) {//|| !clientSocket.isConnected()
             Log.e(TAG, "Cannot send message - socket not connected");
@@ -461,10 +277,7 @@ public class NetworkManager {
 
     public void sendHunter(BountyHunter hunter) {
         setState(ConnectionState.CONNECTED);
-        /*if (clientSocket == null ) {//|| !clientSocket.isConnected()
-            Log.e(TAG, "Cannot send hunter - socket not connected");
-            return;
-        }*/
+
 
         new Thread(() -> {
             try {
@@ -545,7 +358,7 @@ public class NetworkManager {
                 try {
                     clientSocket = new Socket(serviceInfo.getHost(), serviceInfo.getPort());
                     setConnected(clientSocket, null);
-                    startReceiveThread(); // Start receiving messages
+                    reciveHunterandMessage(); // Start receiving messages
                     callback.onConnected();
                 } catch (IOException e) {
                     Log.e(TAG, "Error resolving service: initializeDiscoveryListener " + e.getMessage());
@@ -591,7 +404,5 @@ public class NetworkManager {
         return this.isHost;
     }
 
-    public int getLocalPort() {
-        return this.localPort;
-    }
+
 }

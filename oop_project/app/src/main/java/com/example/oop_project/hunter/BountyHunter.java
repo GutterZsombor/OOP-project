@@ -5,10 +5,10 @@ import com.google.gson.Gson;
 import java.io.Serializable;
 
 public class BountyHunter implements Serializable {
-    // Static field to track number of created bounty hunters
+
     private static int idCounter = 0;
 
-    // Instance fields
+
     private String name;
     private String imagePath;
     private boolean preferedAttack;  // true for melee, false for ranged

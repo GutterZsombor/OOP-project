@@ -1,4 +1,4 @@
-// MultiplayerSetupActivity.java
+
 package com.example.oop_project;
 
 import android.content.Intent;
