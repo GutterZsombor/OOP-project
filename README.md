@@ -1,10 +1,3 @@
----
-author:
-- Gutter-Bacsi Zsombor
-date: 1970-01-01
-title: Bounty Hunter App - Project Documentation
----
-
 # Project Introduction {#sec:intro}
 
 My Project is a Star Wars Bounty Hunters themed simple \"trading cards\"
