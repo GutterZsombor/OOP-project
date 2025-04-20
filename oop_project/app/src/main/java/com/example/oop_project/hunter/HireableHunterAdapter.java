@@ -35,7 +35,7 @@ public class HireableHunterAdapter extends RecyclerView.Adapter<HireableHunterAd
     public HireableHunterAdapter(Context context, List<BountyHunter> hireableHunters, OnHireClickListener listener) {
         this.context = context;
         this.hireableHunters = hireableHunters;
-        this.listener = listener; // Initialize the listener
+        this.listener = listener; // Initialize the listener for radio
     }
 
     @NonNull
@@ -46,9 +46,31 @@ public class HireableHunterAdapter extends RecyclerView.Adapter<HireableHunterAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder,int position) {
+
         BountyHunter hunter = hireableHunters.get(position);
         holder.bind(hunter,position); //unlike other 2 addapters passing values happens in bind()
+        //troubles with position solved by passing bind into holder
+        /*holder.nameTextView.setText(hunter.getName());
+        holder.meleeAtkTextView.setText(String.valueOf(hunter.getMeleAttack()));
+        holder.meleeDefTextView.setText(String.valueOf(hunter.getMeleDefense()));
+        holder.rangedAtkTextView.setText(String.valueOf(hunter.getRangedAttack()));
+        holder.rangedDefTextView.setText(String.valueOf(hunter.getRangedDefense()));
+        holder.hpTextView.setText(String.valueOf(hunter.getMaxHealth()));
+
+
+        holder.selectRadioButton.setChecked(position == selectedPosition);
+        holder.selectRadioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (position != selectedPosition) {
+                    notifyItemChanged(selectedPosition); // Uncheck previously selected
+                    selectedPosition = holder.getAdapterPosition();
+                    notifyItemChanged(selectedPosition); // Check current
+                    Log.d("Adapter", "Selected hunter at position: " + selectedPosition);
+                }
+            }
+        });*/
     }
 
     public BountyHunter getSelectedHunter() {

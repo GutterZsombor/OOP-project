@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Random;
 
 
-//implements NetworkManager.BattleNetworkCallback
+
 public class BattleActivity extends AppCompatActivity  {
     //HAPPYYYYYY
     private static final String TAG = "BattleActivity";
@@ -46,7 +46,7 @@ public class BattleActivity extends AppCompatActivity  {
     private ProgressBar hpBar1, hpBar2;
     private Button nextAttackBtn, endBattleBtn;
     private CardView hunterCard1, hunterCard2;
-    //private NetworkManager networkManagerApp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class BattleActivity extends AppCompatActivity  {
             return;
         }
 
-
+        //get extras
         myHunter = (BountyHunter) intent.getSerializableExtra("myHunter");
 
         enemyHunter = (BountyHunter) intent.getSerializableExtra("enemyHunter");
@@ -82,86 +82,41 @@ public class BattleActivity extends AppCompatActivity  {
             networkManager = ((App) getApplication()).getNetworkManager(this, new NetworkManager.BattleNetworkCallback() {
                 @Override
                 public void onConnected() {
-                    //runOnUiThread(() -> {
+
                         Toast.makeText(BattleActivity.this, "Connected!", Toast.LENGTH_SHORT).show();
-                    //});
+
                 }
 
                 @Override
                 public void onDisconnected() {
-                    //runOnUiThread(() -> {
+
                         Toast.makeText(BattleActivity.this, "Disconnected", Toast.LENGTH_SHORT).show();
-                        //finish();
-                    //});
+
                 }
 
                 @Override
                 public void onMessageReceived(String message) {
-                    // Handle battle messages
-                    //onMessageReceivedBattleAct(message);
+
                 }
             });
+
+            //check for host
             boolean isHost = intent.getBooleanExtra("isHost", false);
 
             if (isHost) {
-                //networkManager.initializeServer();
-                //Log.i(TAG, "Host Init server");
+
                 isMyTurn = true; // Host goes first
             } else {
-                //Log.i(TAG, "Client Discover connect");
-                //networkManager.discoverAndConnect(true);
 
                 isMyTurn = false; // Client waits
             }
 
-            //Connection lost
-           /* if (!networkManager.isConnected()) {
-                Toast.makeText(this, "Connection lost line 123", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "Connection lost  line 123");
-                finish();
-                return;
-            }*/
-
-
-            /*networkManager.updateCallback(new NetworkManager.BattleNetworkCallback() {
-                @Override
-                public void onConnected() {
-                    runOnUiThread(() -> {
-                        Toast.makeText(BattleActivity.this, "Connected to opponent!", Toast.LENGTH_SHORT).show();
-                        // Initiate your game here if needed.
-                    });
-                }
-
-                @Override
-                public void onDisconnected() {
-                    runOnUiThread(() -> {
-                        Toast.makeText(BattleActivity.this, "Disconnected from opponent", Toast.LENGTH_SHORT).show();
-                        finish();
-                    });
-                }
-
-                @Override
-                public void onMessageReceived(String message) {
-                    // Handle incoming battle messages here
-                    Log.d(TAG, "Message received from opponent: " + message);
-                    // Process the message here
-                }
-
-                @Override
-                public void onConnectionStateChanged(NetworkManager.ConnectionState state) {
-                    if (state == NetworkManager.ConnectionState.DISCONNECTED) {
-                        Toast.makeText(BattleActivity.this, "Connection lost", Toast.LENGTH_SHORT).show();
-                        //finish(); // Finish the activity as the connection is lost.
-                    }
-                }
-            });*/
 
             if (networkManager == null || !networkManager.isConnected()) {
                 Log.d(TAG, "Connection check failed - Manager: " + networkManager +
                         ", Connected: " + (networkManager != null && networkManager.isConnected()));
                 Toast.makeText(this, "Connection lost", Toast.LENGTH_SHORT).show();
-                //finish();
-                //return;
+
             }
 
             networkManager.setMessageReceivedListener(message -> {
@@ -171,11 +126,9 @@ public class BattleActivity extends AppCompatActivity  {
 
             });
 
-            //enemyHunter = (BountyHunter) intent.getSerializableExtra("enemyHunter");
 
         } else {
             // Local battle
-            //enemyHunter = (BountyHunter) intent.getSerializableExtra("enemyHunter");
             isMyTurn = true; // Always player's turn in local battle
         }
 
@@ -235,7 +188,7 @@ public class BattleActivity extends AppCompatActivity  {
         BountyHunter attacker = isMultiplayer ? myHunter : (isMyTurn ? myHunter : enemyHunter);
         BountyHunter defender = isMultiplayer ? enemyHunter : (isMyTurn ? enemyHunter : myHunter);
 
-
+        // same as in OLD
         Random rand = new Random();
         boolean prefersMelee = attacker.isPreferedAttack();
         boolean useMelee = (rand.nextFloat() < 0.6) == prefersMelee;
@@ -282,7 +235,7 @@ public class BattleActivity extends AppCompatActivity  {
                         defender.getName(), attacker.getName(), damage, newHP, true);
                 networkManager.sendMessage(gson.toJson(result));
 
-                // Handle rewards locally
+                // Handle rewards locally if we win or lose on our turn
                 // oponent moved to handle results
                 if (attacker == myHunter) {
                     rewardWinner(myHunter, enemyHunter);
@@ -356,30 +309,13 @@ public class BattleActivity extends AppCompatActivity  {
     }
 
     private void updateUI() {
-        //runOnUiThread(() -> {
+
             nextAttackBtn.setEnabled(isMyTurn);
             nextAttackBtn.setText(isMyTurn ? "ATTACK" : "Waiting for opponent...");
-        //});
+
     }
 
-    // Network callbacks
-    /*@Override
-    public void onConnected() {
-        runOnUiThread(() -> {
-            Toast.makeText(this, "Connected to opponent!", Toast.LENGTH_SHORT).show();
-            updateUI();
-        });
-    }
 
-    @Override
-    public void onDisconnected() {
-        runOnUiThread(() -> {
-            Toast.makeText(this, "Disconnected from opponent", Toast.LENGTH_SHORT).show();
-            //finish();
-        });
-    }
-*/
-    //@Override
     public void onMessageReceivedBattleAct(String message) {
         Log.d("onMessageReceivedBattleAct", message);
         try {
@@ -397,7 +333,7 @@ public class BattleActivity extends AppCompatActivity  {
     }
 
     private void handleOpponentAttack(BattleAttack attack) {
-        //runOnUiThread(() -> {
+
             // Update enemy hunter's health
             myHunter.setHealth(attack.getNewHP());
 
@@ -417,28 +353,20 @@ public class BattleActivity extends AppCompatActivity  {
 
             updateHPBars();
 
-            // Check if battle is over
-            /*if (attack.isBattleOver()) {
-                battleLog.append(myHunter.getName() + " is defeated!\n");
-                nextAttackBtn.setEnabled(false);
-                punishLoser(this, myHunter, enemyHunter);
-            } else {
-                // It's now my turn
 
-            }*/
         isMyTurn = true;
         updateUI();
-        //});
-    }
 
+    }
+    //if we win or lose on oponend turn handle here
     private void handleBattleResult(BattleResult result) {
-        //runOnUiThread(() -> {
+
             battleLog.append(result.getLoserName() + " Lost the battle!\n");
             battleLog.append(result.getWinnerName() + " wins the battle!\n");
             nextAttackBtn.setEnabled(false);
             myHunter.setHealth(0);
             updateHPBars();
-
+        //if we win or lose on oponend turn handle here
             if (result.getWinnerName().equals(myHunter.getName())) {
                 rewardWinner(myHunter, enemyHunter);
                 hunterCard1.setCardBackgroundColor(Color.GREEN);
@@ -448,7 +376,7 @@ public class BattleActivity extends AppCompatActivity  {
                 hunterCard2.setCardBackgroundColor(Color.GREEN);
                 hunterCard1.setCardBackgroundColor(Color.RED);
             }
-        //});
+
     }
 
     @Override

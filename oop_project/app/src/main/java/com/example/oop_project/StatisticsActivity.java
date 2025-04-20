@@ -52,7 +52,6 @@ public class StatisticsActivity extends AppCompatActivity {
         JsonHelper.copyJsonIfNotExists(this, "not_hired_bounty_hunters.json");
         JsonHelper.copyJsonIfNotExists(this, "my_bounty_hunters.json");
         JsonHelper.copyJsonIfNotExists(this, "bounty_hunters.json");
-        JsonHelper.copyJsonIfNotExists(this, "Statisticsexample.json");
         JsonHelper.copyJsonIfNotExists(this, "Statistics.json");
 
 
@@ -67,7 +66,7 @@ public class StatisticsActivity extends AppCompatActivity {
         trainingSessions = findViewById(R.id.textTrainingSes);
 
         Log.d(TAG, "RecyclerView found: " + (recyclerView != null)); // Check if recyclerView is found
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //set up horizontal recycle view
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -145,15 +144,7 @@ public class StatisticsActivity extends AppCompatActivity {
             for (BountyHunter hunter : bountyHunters) {
                 hunter.setSelected(false);
             }
-            /*for (BountyHunter hunter : bountyHunters) {
-                String hunterName = hunter.getName();
-                Log.w(TAG, hunterName);
-                Statistic hunterStat = JsonHelper.loadHunterStatistic(this, hunterName, "Statistic.json");
 
-                if (hunterStat != null) {
-                    hunter.setStatistic(hunterStat);
-                }
-            }*/
             loadStats();
 
             runOnUiThread(new Runnable() {
@@ -165,7 +156,7 @@ public class StatisticsActivity extends AppCompatActivity {
             });
         } else {
             Log.e(TAG, "Failed to load bounty hunters or list is empty.");
-            // Optionally display a message to the user indicating the data loading failed.
+
         }
     }
     private void loadStats() {

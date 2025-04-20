@@ -23,7 +23,7 @@ public class BountyHunter implements Serializable {
     private Statistic statistic;
     private boolean isSelected;
 
-    // Constructor
+
     public BountyHunter(String name, String imagePath, boolean preferedAttack,
                         int meleAttack, int meleDefense, int rangedAttack,
                         int rangedDefense, int maxHealth,int experience) {
@@ -42,7 +42,8 @@ public class BountyHunter implements Serializable {
         this.isSelected = false;
     }
 
-    // Methods
+    // damage is caclulated in bounty hunter class
+    //it says no useg but it is clearly used in BattleActivity so i don't know why it says no use
     public int meleDefense(BountyHunter attacker) {
 
         int damage=2;
@@ -50,7 +51,7 @@ public class BountyHunter implements Serializable {
         int xpdiff=attacker.getExperience() - this.experience;
         damage += (int) Math.ceil((atkdef+(xpdiff)*0.5) *0.75);
         if (damage > 0) {
-            //this.health -= damage;
+
             if ((this.health-damage) < 0) {
                 this.health = 0;
             }
@@ -89,11 +90,8 @@ public class BountyHunter implements Serializable {
         return this.rangedAttack;
     }
 
-    public static int getNumberOfCreatedBountyHunters() {
-        return idCounter;
-    }
 
-    // Assuming Statistic is an inner class or imported
+
 
 
     public String getName() { return name; }
@@ -132,6 +130,8 @@ public class BountyHunter implements Serializable {
         isSelected = selected;
     }
 
+
+    //used in Online stuff
     public String toJson() {
         return new Gson().toJson(this);
     }

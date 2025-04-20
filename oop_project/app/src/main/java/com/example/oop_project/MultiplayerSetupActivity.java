@@ -32,8 +32,7 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multiplayer_setup);
-        //networkManager = ((App)getApplication()).getNetworkManager(this,null);
-        // Initialize UI components
+
         hunterImage = findViewById(R.id.hunterImage);
         hunterName = findViewById(R.id.hunterNameText);
         hostBtn = findViewById(R.id.hostBtn);
@@ -102,9 +101,9 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
             }
         };
 
-        //networkManager = new NetworkManager(this, callback);
-        //networkManager.setHunterReceivedListener(this::handleReceivedHunter);
+        // create network instance
         networkManager = new NetworkManager(this, callback);
+        //set it on App level
         ((App) getApplication()).setNetworkManager(networkManager);
         networkManager.setHunterReceivedListener(hunter -> {
             Log.d("Network", "Hunter received in listener: " + hunter.getName());
@@ -144,7 +143,7 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
             hostBtn.setEnabled(false);
             joinBtn.setEnabled(false);
             startBattle(false);
-            //Thread.sleep(1000);
+
 
             networkManager.setHunterReceivedListener(enemyHunter -> {
                 if (recived==false){
@@ -155,7 +154,7 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
             if (networkManager.isConnected()) {
                 networkManager.sendHunter(selectedHunter);}
 
-            //handleReceivedHunter(enemyHunter);
+
 
             System.out.println("Client End");
 
@@ -171,9 +170,9 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
     }
 
     private void handleReceivedHunter(BountyHunter enemyHunter) {
-        //runOnUiThread(() -> {
+
             Log.d("MultiPlayerSetup", "Received enemy hunter: " + enemyHunter.getName());
-            //((App)getApplication()).setNetworkManager(networkManager);
+
             Intent intent = new Intent(MultiplayerSetupActivity.this, BattleActivity.class);
             intent.putExtra("myHunter", selectedHunter);
             intent.putExtra("enemyHunter", enemyHunter);
@@ -181,16 +180,8 @@ public class MultiplayerSetupActivity extends AppCompatActivity {
             intent.putExtra("isHost", networkManager.isHost());
             startActivity(intent);
             Log.d("MultiplayerSetup", "Intent Succses " + enemyHunter.getName());
-            //finish();
 
-        //});
     }
 
-    /*@Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //Dont teardown here pass to Battle Activity
 
-
-    }*/
 }

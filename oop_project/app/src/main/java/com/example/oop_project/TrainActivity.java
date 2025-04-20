@@ -1,4 +1,4 @@
-package com.example.oop_project; // Replace with your actual package name
+package com.example.oop_project;
 
 import static java.security.AccessController.getContext;
 
@@ -46,8 +46,7 @@ public class TrainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training);
 
-        //Intent intent = getIntent();
-        //BountyHunter selectedHunter = (BountyHunter) intent.getSerializableExtra("selectedHunter");
+       // Get the selected hunter from the intent
         BountyHunter selectedHunter = (BountyHunter) getIntent().getSerializableExtra("selectedHunter");
 
 
@@ -65,40 +64,21 @@ public class TrainActivity extends AppCompatActivity {
 
 
 
-
-
         loadValues(selectedHunter);
 
 
-
-        /*if (selectedHunter != null) {
-        ((TextView) cardView.findViewById(R.id.hunter_name)).setText(String.valueOf(selectedHunter.getName()));
-            ((TextView) cardView.findViewById(R.id.MeleATKtext)).setText(String.valueOf(selectedHunter.getMeleAttack()));
-            ((TextView) cardView.findViewById(R.id.MeleDEFtext)).setText(String.valueOf(selectedHunter.getMeleDefense()));
-            ((TextView) cardView.findViewById(R.id.RangedATKtext)).setText(String.valueOf(selectedHunter.getRangedAttack()));
-            ((TextView) cardView.findViewById(R.id.RangedDEFtext)).setText(String.valueOf(selectedHunter.getRangedDefense()));
-            ((TextView) cardView.findViewById(R.id.hptext)).setText(String.valueOf(selectedHunter.getMaxHealth()));
-            ((TextView) cardView.findViewById(R.id.xptext)).setText(String.valueOf(selectedHunter.getExperience()));
-            ImageView img= cardView.findViewById(R.id.hunter_image);
-            int resId =  img.getContext().getResources().getIdentifier(
-                    selectedHunter.getImagePath(), "drawable", img.getContext().getPackageName());
-
-
-            img.setImageResource(resId);
-
-        // Add the card to the container
-        hunterCardContainer.addView(cardView);*/
-        // Add the card to the container
         hunterCardContainer.addView(cardView);
 
 
 
 
-        String fileName = "my_bounty_hunters.json"; // Change if needed
+        String fileName = "my_bounty_hunters.json";
 
         btnTrainMelee.setOnClickListener(v -> {
+            // Train the selected hunter
             if (selectedHunter != null) {
                 selectedHunter.setExperience(selectedHunter.getExperience() + 1);
+                //send hunter and desired action to trainingTimier
                 trainingTimier(selectedHunter, () -> {
                     selectedHunter.setMeleAttack(selectedHunter.getMeleAttack() + 3);
                     selectedHunter.setMeleDefense(selectedHunter.getMeleDefense() + 3);
@@ -106,13 +86,15 @@ public class TrainActivity extends AppCompatActivity {
                     JsonHelper.saveUpdatedHunter(this, selectedHunter, fileName);
                     Toast.makeText(this, "Melee training complete!", Toast.LENGTH_SHORT).show();
                 });
-                //recreate();
+
             }
         });
 
         btnTrainRange.setOnClickListener(v -> {
+            // Train the selected hunter
             if (selectedHunter != null) {
                 selectedHunter.setExperience(selectedHunter.getExperience() + 1);
+                //send hunter and desired action to trainingTimier
                 trainingTimier(selectedHunter, () -> {
                     selectedHunter.setRangedAttack(selectedHunter.getRangedAttack() + 3);
                     selectedHunter.setRangedDefense(selectedHunter.getRangedDefense() + 3);
@@ -120,13 +102,15 @@ public class TrainActivity extends AppCompatActivity {
                     JsonHelper.saveUpdatedHunter(this, selectedHunter, fileName);
                     Toast.makeText(this, "Ranged training complete!", Toast.LENGTH_SHORT).show();
                 });
-                //recreate();
+
             }
         });
 
         btnTrainXP.setOnClickListener(v -> {
+            // Train the selected hunter
             if (selectedHunter != null) {
                 selectedHunter.setExperience(selectedHunter.getExperience() + 5);
+                //send hunter and desired action to trainingTimier
                 trainingTimier(selectedHunter, () -> {
                     selectedHunter.setMeleAttack(selectedHunter.getMeleAttack() + 1);
                     selectedHunter.setMeleDefense(selectedHunter.getMeleDefense() + 1);
@@ -137,7 +121,7 @@ public class TrainActivity extends AppCompatActivity {
                     JsonHelper.saveUpdatedHunter(this, selectedHunter, fileName);
                     Toast.makeText(this, "XP training complete!", Toast.LENGTH_SHORT).show();
                 });
-                //recreate();
+
             }
         });
 
@@ -182,7 +166,7 @@ public class TrainActivity extends AppCompatActivity {
         trainingProgress.setMax(duration);
         textViewTrainingProg.setText("Training in Progress...");
         disableButtons();
-
+        //progress bar timer
         CountDownTimer timer = new CountDownTimer(duration, 100) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -190,7 +174,7 @@ public class TrainActivity extends AppCompatActivity {
                 trainingProgress.setProgress(progress);
                 disableButtons();
             }
-
+            //if training is done
             @Override
             public void onFinish() {
                 trainingProgress.setProgress(duration);
@@ -198,8 +182,6 @@ public class TrainActivity extends AppCompatActivity {
 
                 onTrainingComplete.run();
                 enableButtons();
-                //recreate(); // Refresh UI
-                //Toast.makeText(TrainActivity.this, "Training complete!", Toast.LENGTH_SHORT).show();
 
                 //global stat
                 int [] globalStats = JsonHelper.loadGlobalStats(TrainActivity.this, "Statistics.json");

@@ -8,6 +8,7 @@ import com.example.oop_project.util.NetworkManager;
 
 
 public class App extends Application {
+    //declare on app level so any activity can access and use same manager
     private NetworkManager networkManager;
 
     public void setNetworkManager(NetworkManager manager) {

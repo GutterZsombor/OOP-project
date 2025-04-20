@@ -42,4 +42,13 @@
         android:layout_marginTop="20dp"
         android:padding="12dp"
         android:color="#424242"/>
+    <Button
+        android:id="@+id/moveMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#424242"
+        android:textColor="#FFFFFF"
+        android:text="Move to Main"
+        android:padding="12dp"
+        android:color="#424242"/>
 </LinearLayout>

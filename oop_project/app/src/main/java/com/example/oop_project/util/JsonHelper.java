@@ -32,6 +32,7 @@ public class JsonHelper {
 
     //newer functions
     public static JSONObject loadJson(Context context, String fileName) {
+        //read file
         try {
             FileInputStream fis = context.openFileInput(fileName);
             byte[] data = new byte[fis.available()];
@@ -45,6 +46,7 @@ public class JsonHelper {
     }
 
     public static void saveJson(Context context, JSONObject jsonObject, String fileName) {
+        //write to file
         try {
             FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             OutputStreamWriter writer = new OutputStreamWriter(fos);
@@ -58,9 +60,12 @@ public class JsonHelper {
 
 
     public static int[] loadGlobalStats(Context context, String fileName) {
+        //read file
         JSONObject root = loadJson(context, fileName);
         JSONObject globalStats = root.optJSONObject("globalStats");
+        //check if null
         if (globalStats == null) return new int[]{0, 0, 0, 0};
+        //return array
         return new int[]{
                 globalStats.optInt("totalBountyHuntersHired", 0),
                 globalStats.optInt("totalLocalBattles", 0),
@@ -71,6 +76,7 @@ public class JsonHelper {
 
 
     public static void updateGlobalStats(Context context, int[] globalStats, String fileName) {
+        //read file
         JSONObject root = loadJson(context, fileName);
         if (root == null) {
             Log.e(TAG, "Failed to load JSON file");
@@ -110,13 +116,18 @@ public class JsonHelper {
 
 
     public static Statistic loadHunterStatistic(Context context, String name, String fileName) {
+        //read file
         JSONObject root = loadJson(context, fileName);
         JSONArray hunters = root.optJSONArray("bountyHunterStats");
+        //check if null
         if (hunters != null) {
+            //check if hunter exists
             for (int i = 0; i < hunters.length(); i++) {
                 JSONObject obj = hunters.optJSONObject(i);
+                //check if name matches
                 if (obj != null && name.equals(obj.optString("name"))) {
                     Statistic stat = new Statistic();
+                    //load data
 
                     int sessions = obj.optInt("numberOfTrainingSessions", 0);
                     for (int s = 0; s < sessions; s++) {
@@ -144,8 +155,10 @@ public class JsonHelper {
 
 
     public static void updateHunterStatistic(Context context, String name, Statistic stat, String fileName) {
+        //read file
         JSONObject root = loadJson(context, fileName);
         JSONArray hunters = root.optJSONArray("bountyHunterStats");
+        //check if null
         if (hunters == null) hunters = new JSONArray();
 
         try {
@@ -157,11 +170,12 @@ public class JsonHelper {
                     break;
                 }
             }
+            // Add new entry
 
             JSONObject hunterObj = new JSONObject();
             hunterObj.put("name", name);
             hunterObj.put("numberOfTrainingSessions", stat.getNumberOfTrainingSessions());
-
+            //add wins and losts
             JSONArray winArray = new JSONArray();
             for (String nameOfLoser : stat.getWins()) {
                 winArray.put(nameOfLoser);
@@ -186,15 +200,16 @@ public class JsonHelper {
 
     //early functions
     public static List<BountyHunter> loadBountyHunters(Context context, String fileName) {
+        //empty array
         List<BountyHunter> bountyHunters = new ArrayList<>();
         try {
-
+            //read file
             FileInputStream fis = context.openFileInput(fileName);
             byte[] data = new byte[fis.available()];
             fis.read(data);
             fis.close();
 
-
+            //parse json
             JSONArray huntersArray = new JSONArray(new String(data));
 
             for (int i = 0; i < huntersArray.length(); i++) {
@@ -211,7 +226,7 @@ public class JsonHelper {
                         hunterJson.optInt("maxHealth", 100),
                         hunterJson.optInt("experience", 0)
                 );
-
+                //add to list
                 bountyHunters.add(hunter);
             }
         } catch (Exception e) {
@@ -225,8 +240,9 @@ public class JsonHelper {
 
     public static boolean saveBountyHunters(Context context, List<BountyHunter> bountyHunters, String fileName) {
         try {
+            //convert to json
             JSONArray huntersArray = new JSONArray();
-
+            //add to array
             for (BountyHunter hunter : bountyHunters) {
                 JSONObject hunterJson = new JSONObject();
                 hunterJson.put("name", hunter.getName());
@@ -238,10 +254,11 @@ public class JsonHelper {
                 hunterJson.put("rangedDefense", hunter.getRangedDefense());
                 hunterJson.put("maxHealth", hunter.getMaxHealth());
                 hunterJson.put("experience", hunter.getExperience());
+                //add to array
 
                 huntersArray.put(hunterJson);
             }
-
+            //write to file
             FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             OutputStreamWriter writer = new OutputStreamWriter(fos);
             writer.write(huntersArray.toString());
@@ -256,13 +273,16 @@ public class JsonHelper {
     }
 
     public static void copyJsonIfNotExists(Context context, String fileName) {
+        //check if file exists
         File file = new File(context.getFilesDir(), fileName);
+        //if not exists, copy it
         if (!file.exists()) {
             try (InputStream inputStream = context.getAssets().open(fileName);
                  FileOutputStream outputStream = new FileOutputStream(file)) {
-
+                //copy file
                 byte[] buffer = new byte[1024];
                 int length;
+
                 while ((length = inputStream.read(buffer)) > 0) {
                     outputStream.write(buffer, 0, length);
                 }
@@ -273,15 +293,16 @@ public class JsonHelper {
         }
     }
     public static void saveUpdatedHunter(Context context, BountyHunter updatedHunter, String fileName) {
+        // Load all hunters
         List<BountyHunter> allHunters = JsonHelper.loadBountyHunters(context, fileName);
-
+        // Find the hunter to update
         for (int i = 0; i < allHunters.size(); i++) {
             if (allHunters.get(i).getName().equals(updatedHunter.getName())) {
                 allHunters.set(i, updatedHunter);
                 break;
             }
         }
-
+        // Save the updated hunters
         boolean saved = JsonHelper.saveBountyHunters(context, allHunters, fileName);
         if (!saved) {
             Log.d(TAG, "Failed to save updated hunter.");
@@ -307,8 +328,10 @@ public class JsonHelper {
     }
 
     public static BountyHunter loadOriginalHunter(Context context, String name) {
+        // Load all hunters
         List<BountyHunter> allHunters = JsonHelper.loadBountyHunters(context, "bounty_hunters.json");
         for (BountyHunter hunter : allHunters) {
+            // Find the hunter with the given name
             if (hunter.getName().equals(name)) {
                 return hunter;
             }

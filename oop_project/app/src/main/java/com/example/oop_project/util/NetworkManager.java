@@ -42,9 +42,12 @@ public class NetworkManager {
     private MessageReceivedListener messageListener;
     private HunterReceivedListener hunterReceivedListener;
     private final Handler mainHandler;
+
+    //Receives a BountyHunter
     public interface HunterReceivedListener {
         void onHunterReceived(BountyHunter hunter);
     }
+    // battle related messages
     public interface MessageReceivedListener {
         void onMessageReceivedd(String message);
     }
@@ -56,13 +59,13 @@ public class NetworkManager {
     }
 
 
-
+    //Handles connection state, message received
     public interface BattleNetworkCallback {
         void onConnected();
         void onDisconnected();
         void onMessageReceived(String message);
         default void onConnectionStateChanged(ConnectionState state) {
-            // Default implementation does nothing
+
         }
 
     }
@@ -75,6 +78,7 @@ public class NetworkManager {
         nsdManager = (NsdManager) context.getSystemService(Context.NSD_SERVICE);
     }
 
+    // Updates the callback to override stuff if needed
     public void updateCallback(BattleNetworkCallback callback) {
         this.callback = callback;
     }
@@ -88,7 +92,7 @@ public class NetworkManager {
 
     private ConnectionState state = ConnectionState.CONNECTED;
 
-
+    //sets Staet to connected
     private synchronized void setConnected(Socket socket, ServerSocket serverSocket) {
         this.clientSocket = socket;
         this.serverSocket = serverSocket;
@@ -96,6 +100,7 @@ public class NetworkManager {
         Log.d(TAG, "Connection established - Client: " + socket + ", Server: " + serverSocket);
     }
 
+    //disconect
     private synchronized void setDisconnected(String where) {
         this.state = ConnectionState.DISCONNECTED;
         this.clientSocket = null;
@@ -135,17 +140,20 @@ public class NetworkManager {
         Log.d(TAG, "Connection state changed to: " + newState);
     }
 
-
+    //recive message and hunter
     private void reciveHunterandMessage() {
+
         new Thread(() -> {
+
             try {
+                //receive message trough socet
                 BufferedReader reader = new BufferedReader(
                         new InputStreamReader(clientSocket.getInputStream()));
                 String message;
-
+                //phrse message
                 while ((message = reader.readLine()) != null) {
                     Log.d(TAG, "Received message NetworkManager: " + message);
-
+                    //if hunter
                     try {
                         BountyHunter hunter = BountyHunter.fromJson(message);
                         if (hunterReceivedListener != null) {
@@ -157,19 +165,20 @@ public class NetworkManager {
                     } catch (Exception e) {
                         Log.d(TAG, "Message is not a hunter: " + e.getMessage());
                     }
+                    //if message
                     try {
-                        BattleAttack attack = BattleAttack.fromJson(message);
+
                         final String attackMessage=message;
                         if (messageListener != null) {
                             mainHandler.post(() ->
                                     messageListener.onMessageReceivedd(attackMessage));
                             Log.d(TAG, "Attack received: " );
                         }
-                        //messageListener.onMessageReceivedd(message);
-                        //continue;
+
                     } catch (Exception e) {
                         Log.d(TAG, "Message is not a message: " + e.getMessage());
                     }
+                    //if not hunter or message
                     final String messageFinal = message;
                     if (callback != null) {
                         mainHandler.post(() -> callback.onMessageReceived(messageFinal));
@@ -185,19 +194,23 @@ public class NetworkManager {
         }).start();
     }
 
+
     public void initializeServer() {
         isHost = true;
 
         try {
+            // Create a server socket let sytem choosw
             serverSocket = new ServerSocket(0);
             int port = serverSocket.getLocalPort(); // Get the actual port
             Log.d(TAG, "Server socket created on port: " + port);
+            //register service
 
             setState(ConnectionState.CONNECTING);
             registerService(port);
 
             new Thread(() -> {
                 try {
+                    //get client
                     clientSocket = serverSocket.accept();
                     setConnected(clientSocket, serverSocket);
                     reciveHunterandMessage(); // Now this will work
@@ -218,7 +231,7 @@ public class NetworkManager {
 
         }
         //DEBUG: Print available network interfaces and IPs
-        try {
+        /*try {
             Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
             if (interfaces != null) {
                 while (interfaces.hasMoreElements()) {
@@ -234,7 +247,7 @@ public class NetworkManager {
             }
         } catch (SocketException e) {
             Log.e(TAG, "Error listing network interfaces", e);
-        }
+        }*/
 
 
 
@@ -242,6 +255,7 @@ public class NetworkManager {
 
 
 
+    //for client
     public void discoverAndConnect(boolean lisenerexit) {
         setState(ConnectionState.CONNECTING);
         isHost = false;
@@ -265,6 +279,7 @@ public class NetworkManager {
 
         new Thread(() -> {
             try {
+                // Send message
                 PrintWriter out = new PrintWriter(
                         new OutputStreamWriter(clientSocket.getOutputStream()), true);
                 out.println(message);
@@ -275,6 +290,7 @@ public class NetworkManager {
         }).start();
     }
 
+    //same as massege but sending hunter
     public void sendHunter(BountyHunter hunter) {
         setState(ConnectionState.CONNECTED);
 
@@ -290,6 +306,8 @@ public class NetworkManager {
             }
         }).start();
     }
+
+    //regiuster service on network NSD
     private void registerService(int port) {
         this.localPort = port; // Store the port if needed elsewhere
         NsdServiceInfo serviceInfo = new NsdServiceInfo();
@@ -321,6 +339,7 @@ public class NetworkManager {
         nsdManager.registerService(serviceInfo, NsdManager.PROTOCOL_DNS_SD, registrationListener);
     }
 
+    //for client start to look for service
     private void initializeDiscoveryListener() {
         setState(ConnectionState.CONNECTED);
         discoveryListener = new NsdManager.DiscoveryListener() {

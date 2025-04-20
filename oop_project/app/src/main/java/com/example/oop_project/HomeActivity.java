@@ -1,4 +1,4 @@
-package com.example.oop_project; // Replace with your actual package name
+package com.example.oop_project;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -36,7 +36,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadBountyHunters(); // Reload or refresh your hunter list here
+        loadBountyHunters(); // Reload or refresh hunter list here
     }
 
     @Override
@@ -53,10 +53,10 @@ public class HomeActivity extends AppCompatActivity {
         Log.d(TAG, "RecyclerView found: " + (recyclerView != null)); // Check if recyclerView is found
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Initialize the adapter with the (initially empty) list
+        // Initialize the adapter with the  list
         adapter = new BountyHunterAdapter(this, bountyHunters);
         Log.d("HomeActivity", "Adapter initialized: " + (adapter != null)); // Check if adapter is initialized
-        recyclerView.setAdapter(adapter); // Set the adapter **before** loading data
+        recyclerView.setAdapter(adapter); // Set the adapter loading data
         Log.d("HomeActivity", "Adapter set on RecyclerView.");
 
 
@@ -66,20 +66,21 @@ public class HomeActivity extends AppCompatActivity {
         moveToTraining.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // add selected huters
                 List<BountyHunter> selectedHunters = new ArrayList<>();
                 for (BountyHunter hunter : bountyHunters) {
                     if (hunter.isSelected()) {
                         selectedHunters.add(hunter);
                     }
                 }
-
+                // Check if only one hunter is selected
                 if (selectedHunters.size() == 1) {
                     // If only one hunter is selected, pass it to the next activity
                     Intent intent = new Intent(HomeActivity.this, TrainActivity.class);
                     intent.putExtra("selectedHunter", selectedHunters.get(0)); // Send selected hunter
                     startActivity(intent);
                 } else {
-                    // Show a Toast if no or multiple hunters are selected
+
                     Toast.makeText(HomeActivity.this, "Please select exactly one bounty hunter", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -87,13 +88,14 @@ public class HomeActivity extends AppCompatActivity {
         moveToBattle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // add selected huters
                 List<BountyHunter> selectedHunters = new ArrayList<>();
                 for (BountyHunter hunter : bountyHunters) {
                     if (hunter.isSelected()) {
                         selectedHunters.add(hunter);
                     }
                 }
-
+                // Check if two hunter is selected
                 if (selectedHunters.size() == 2) {
                     int [] globalStats = JsonHelper.loadGlobalStats(HomeActivity.this, "Statistics.json");
                     globalStats[1]++;
@@ -122,13 +124,14 @@ public class HomeActivity extends AppCompatActivity {
         movetoOnlineBattle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // add selected huters
                 List<BountyHunter> selectedHunters = new ArrayList<>();
                 for (BountyHunter hunter : bountyHunters) {
                     if (hunter.isSelected()) {
                         selectedHunters.add(hunter);
                     }
                 }
-
+                // Check if only one hunter is selected
                 if (selectedHunters.size() == 1) {
                     int [] globalStats = JsonHelper.loadGlobalStats(HomeActivity.this, "Statistics.json");
                     globalStats[2]++;
@@ -142,10 +145,10 @@ public class HomeActivity extends AppCompatActivity {
                         Log.e(TAG, "Selected hunter is null. Cannot start online battle.");
                         return;
                     }
-
+                    // If only one hunter is selected, pass it to the next activity
                     Intent intent = new Intent(HomeActivity.this, MultiplayerSetupActivity.class);
                     intent.putExtra("selectedHunter", hunter1); // First hunter
-                    //intent.putExtra("enemyHunter", hunter2); // Second hunter
+
                     startActivity(intent);
                 } else {
 
@@ -157,7 +160,7 @@ public class HomeActivity extends AppCompatActivity {
         movetoMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                    //move to main
                     Intent intent = new Intent(HomeActivity.this, MainActivity.class);
 
                     startActivity(intent);
@@ -167,8 +170,9 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     private void loadBountyHunters() {
+        // Load the list of hunters from the JSON file
         List<BountyHunter> loadedHunters = JsonHelper.loadBountyHunters(this, "my_bounty_hunters.json");
-
+        // create list
         if (loadedHunters != null && !loadedHunters.isEmpty()) {
             bountyHunters.clear();
             bountyHunters.addAll(loadedHunters);
@@ -176,16 +180,18 @@ public class HomeActivity extends AppCompatActivity {
             for (BountyHunter hunter : bountyHunters) {
                 hunter.setSelected(false);
             }
+            // Notify the adapter on the UI thread
+            //load data to adapter
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    adapter.notifyDataSetChanged(); // Notify the adapter on the UI thread
+                    adapter.notifyDataSetChanged();
                     Log.d("HomeActivity", "Data loaded and adapter notified. Item count: " + adapter.getItemCount());
                 }
             });
         } else {
             Log.e("HomeActivity", "Failed to load bounty hunters or list is empty.");
-            // Optionally display a message to the user indicating the data loading failed.
+
         }
     }
 }

@@ -30,9 +30,7 @@ public class Statistic implements Serializable {
     public void addWin(String nameOfLoser) {
         wins.add(nameOfLoser);
 
-        /*for (int i = 0; i < wins.size(); i++) {
-            System.out.println(wins.get(i));
-        }*/
+
     }
 
     public void addLost(String nameOfWinner) {
@@ -62,7 +60,7 @@ public class Statistic implements Serializable {
             return wins.size();
         }
         double number = (double) wins.size() / losts.size();
-        double rounded = Math.round(number * 100.0) / 100.0;//round two 2 decimal
+        double rounded = Math.round(number * 100.0) / 100.0; //round two 2 decimal
         return rounded ;
     }
 }

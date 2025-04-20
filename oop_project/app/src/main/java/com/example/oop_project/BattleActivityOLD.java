@@ -1,4 +1,4 @@
-package com.example.oop_project; // Replace with your actual package name
+package com.example.oop_project; 
 
 import android.content.Context;
 import android.os.Bundle;

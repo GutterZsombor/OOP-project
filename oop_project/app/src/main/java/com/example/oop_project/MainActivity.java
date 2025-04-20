@@ -65,22 +65,21 @@ public class MainActivity extends AppCompatActivity {
         JsonHelper.DONOTUSEcopyJson( this,"not_hired_bounty_hunters.json");
         JsonHelper.DONOTUSEcopyJson(this ,"my_bounty_hunters.json");
         JsonHelper.DONOTUSEcopyJson(this ,"bounty_hunters.json");
-        JsonHelper.DONOTUSEcopyJson(this ,"Statisticsexample.json");
         JsonHelper.DONOTUSEcopyJson(this ,"Statistics.json");
+
 */
-
-
+        //load json files
         JsonHelper.copyJsonIfNotExists( this,"not_hired_bounty_hunters.json");
         JsonHelper.copyJsonIfNotExists(this ,"my_bounty_hunters.json");
         JsonHelper.copyJsonIfNotExists(this ,"bounty_hunters.json");
-        JsonHelper.copyJsonIfNotExists(this ,"Statisticsexample.json");
         JsonHelper.copyJsonIfNotExists(this ,"Statistics.json");
 
+        //load myhunter list and geth its size
         numofHired = JsonHelper.loadBountyHunters(this, "my_bounty_hunters.json").size();
-
+        //add text to textView
         atHomeText.setText("Hunters at Home: "+numofHired);
 
-        // Disable other buttons for now
+
         btnViewStatistics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
