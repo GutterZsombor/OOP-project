@@ -1,4 +1,4 @@
-# Project Introduction {#sec:intro}
+# Project Introduction 
 
 My Project is a Star Wars Bounty Hunters themed simple \"trading cards\"
 game-like Android application. The application is designed to manage,
@@ -16,15 +16,19 @@ app uses minimalistic style user interface with many activities like:
 Data is stored and fetched from JSON files. Network functionality is
 used for multiplayer battles
 
-# Overview + UML {#sec:uml}
+# Check List on all the implemented Bonus feature:
+RecyclerView                 Implemeted: Home Activity, Hire Activity, Statistics Activity
+Bounty Hunters               Have Images Implemeted
+Battle Visualizaton          Attacking hunter has White background, Defending Grey, Winner Green, Loser Red
+Turn-based combat            Attack Button needs to be Pressed For every attack
+Statistics Implemeted:       Statistics Activity
+Randomness in Battles        Implemented: deciding melee/ranged attack (60 percent chance for preferred)
+Fragments                    Implemented: all the different card view items
+Data StorageLoading          Implemeted: Json files and JsonHelper
+Statistics Visualization     Implemented: Charts
+Custom Feature X - Network   Implemented: Multiplayer Battle mode --> Grade: +2
 
-UML
-
-::: landscape
-![image](classdiagram.png){width="\\paperheight" height="\\paperwidth"}
-:::
-
-# Individual Section {#sec:individual}
+# Individual Section
 
 ## Class: BountyHunter and Statistics {#subsec:classes}
 
@@ -376,32 +380,3 @@ Recycler View components were used and Card view items were presented in
 them. As I mentioned the app is very minimalistic I tried uniform colors
 (mainly Gray). I'm not a very artistic person.
 
-# Videos {#sec:videos}
-
-**Instead of a single Long video I decided to make multiple shorter ones
-focusing on smaller parts of the app.** **Please watch them in the
-intended order.**
-
-## Intro {#subsec:intro}
-
-## Run on Emulator {#subsec:emulator}
-
-## Run on Physical Device Online Battle {#subsec:physical}
-
-## Package: hunter {#subsec:hunter}
-
-## Data Storage: Json files + JsonHelper {#subsec:data}
-
-## Main Activity + Hire Hunter + Home {#subsec:mainandhire}
-
-## Training + Statistics + Charts {#subsec:trainandstatisticscharts}
-
-## Battle Activity OLD {#subsec:oldbattle}
-
-## Network + Multi Player Setup {#subsec:networkmulti}
-
-## Battle Activity (in use) {#subsec:battleinuse}
-
-# AI Declaration {#sec:ai}
-
-# Overview {#sec:finaloverview}
