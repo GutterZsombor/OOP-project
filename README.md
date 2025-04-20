@@ -17,16 +17,16 @@ Data is stored and fetched from JSON files. Network functionality is
 used for multiplayer battles
 
 # Check List on all the implemented Bonus feature:
-RecyclerView                 Implemeted: Home Activity, Hire Activity, Statistics Activity
-Bounty Hunters               Have Images Implemeted
-Battle Visualizaton          Attacking hunter has White background, Defending Grey, Winner Green, Loser Red
-Turn-based combat            Attack Button needs to be Pressed For every attack
-Statistics Implemeted:       Statistics Activity
-Randomness in Battles        Implemented: deciding melee/ranged attack (60 percent chance for preferred)
-Fragments                    Implemented: all the different card view items
-Data StorageLoading          Implemeted: Json files and JsonHelper
-Statistics Visualization     Implemented: Charts
-Custom Feature X - Network   Implemented: Multiplayer Battle mode --> Grade: +2
+-    RecyclerView                 Implemeted: Home Activity, Hire Activity, Statistics Activity,
+-    Bounty Hunters               Have Images Implemeted
+-    Battle Visualizaton          Attacking hunter has White background, Defending Grey, Winner Green, Loser Red
+-    Turn-based combat            Attack Button needs to be Pressed For every attack
+-    Statistics Implemeted:       Statistics Activity
+-    Randomness in Battles        Implemented: deciding melee/ranged attack (60 percent chance for preferred)
+-    Fragments                    Implemented: all the different card view items
+-    Data StorageLoading          Implemeted: Json files and JsonHelper
+-    Statistics Visualization     Implemented: Charts
+-    Custom Feature X - Network   Implemented: Multiplayer Battle mode --> Grade: +2
 
 # Individual Section
 
